@@ -57,6 +57,17 @@ const server = (0, http_1.createServer)((request, response) => {
             break;
         }
         default: {
+            if (request.method === 'OPTIONS') {
+                response.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Content-Type': 'text/plain'
+                });
+                response.statusCode = 200;
+                response.end();
+                break;
+            }
             response.statusCode = 404;
             response.end();
         }
