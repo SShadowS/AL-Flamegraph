@@ -106,3 +106,4 @@ dist
 *.alcpuprofile
 output.txt
 al.svg
+encoded*.txt

@@ -60,6 +60,15 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
         break;
       }
       default: {
+        if (request.method === 'OPTIONS') {
+          response.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Content-Type': 'text/plain'
+          });
+          response.end();
+        }
         response.statusCode = 404;
         response.end();
       }
