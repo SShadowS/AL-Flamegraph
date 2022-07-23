@@ -53,13 +53,20 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
           });
           request.on('end', () => {
             const result = Buffer.concat(chunks).toString();
-            input = JSON.parse(result);
-            response.end(ProcessData(input));
+            if (result.length > 0) {
+              input = JSON.parse(result);
+              response.statusCode = 200;
+              response.end(ProcessData(input));
+            } else {
+              response.statusCode = 204;
+              response.end();
+            }
           });
         }
         break;
       }
       default: {
+        // Used to detect uptime for loadbalacing purposes
         if (request.method === 'OPTIONS') {
           response.writeHead(200, {
             'Access-Control-Allow-Origin': '*',
