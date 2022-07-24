@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
+const child_process_1 = require("child_process");
+const fs = require("fs");
 const port = 5000;
 let processed = [];
 let callStack = "";
@@ -30,13 +32,31 @@ function ProcessElement(element) {
     }
     ;
 }
-function ProcessData(data) {
+async function ProcessData(data) {
     data.nodes.forEach(element => {
         if (!processed.includes(element.id)) {
             callStack = "";
             processed.push(element.id);
             ProcessElement(element);
         }
+    });
+    fs.writeFile('al.folded', output, err => {
+        if (err) {
+            console.error(err);
+        }
+        // file written successfully
+    });
+    let command = "./flamegraph.pl al.folded";
+    (0, child_process_1.exec)(command, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        output = stdout;
     });
     return output;
 }
