@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
-const child_process_1 = require("child_process");
 const fs = require("fs");
+const util = require("util");
+const execPromise = util.promisify(require('child_process').exec);
 const port = 5000;
 let processed = [];
-let callStack = "";
+let callStack;
 let input;
-let output = "";
+let output;
+let CSVoutput;
 function AddLine(element) {
     // Sample output from Linux kernel
     // swapper;start_kernel;rest_init;cpu_idle;default_idle;native_safe_halt 1
@@ -33,6 +35,10 @@ function ProcessElement(element) {
     ;
 }
 async function ProcessData(data) {
+    output = "";
+    processed = [];
+    callStack = "";
+    CSVoutput = "";
     data.nodes.forEach(element => {
         if (!processed.includes(element.id)) {
             callStack = "";
@@ -40,26 +46,11 @@ async function ProcessData(data) {
             ProcessElement(element);
         }
     });
-    fs.writeFile('al.folded', output, err => {
-        if (err) {
-            console.error(err);
-        }
-        // file written successfully
-    });
-    let command = "./flamegraph.pl al.folded";
-    (0, child_process_1.exec)(command, (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        output = stdout;
-    });
-    return output;
+    let foldedfile = "al.folded";
+    WriteOutputToFile(foldedfile);
+    return await ConvertFoldedToSVGasync(foldedfile);
 }
+;
 const server = (0, http_1.createServer)((request, response) => {
     switch (request.url) {
         case '/upload': {
@@ -70,10 +61,19 @@ const server = (0, http_1.createServer)((request, response) => {
                 });
                 request.on('end', () => {
                     const result = Buffer.concat(chunks).toString();
+                    console.log(result);
                     if (result.length > 0) {
                         input = JSON.parse(result);
-                        response.statusCode = 200;
-                        response.end(ProcessData(input));
+                        ProcessData(input).then(finalresult => {
+                            if (finalresult.length > 0) {
+                                response.end(finalresult);
+                                response.statusCode = 200;
+                            }
+                            else {
+                                response.end("Error");
+                                response.statusCode = 500;
+                            }
+                        });
                     }
                     else {
                         response.statusCode = 204;
@@ -84,7 +84,7 @@ const server = (0, http_1.createServer)((request, response) => {
             break;
         }
         default: {
-            // Used to detect uptime for loadbalacing purposes
+            // Used to detect uptime for load-balancing purposes
             if (request.method === 'OPTIONS') {
                 response.writeHead(200, {
                     'Access-Control-Allow-Origin': '*',
@@ -102,4 +102,19 @@ const server = (0, http_1.createServer)((request, response) => {
     }
 });
 server.listen(port);
+async function ConvertFoldedToSVGasync(foldedfile) {
+    let command = `./flamegraph.pl ${foldedfile}`;
+    try {
+        const { stdout, stderr } = await execPromise(command);
+        CSVoutput = stdout;
+        return CSVoutput;
+    }
+    catch (error) {
+        console.log(error);
+    }
+    console.log(`Folded file`);
+}
+function WriteOutputToFile(foldedfile) {
+    fs.writeFileSync(foldedfile, output);
+}
 //# sourceMappingURL=converter.js.map

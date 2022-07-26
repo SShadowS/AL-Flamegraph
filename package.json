@@ -25,5 +25,8 @@
     "bugs": {
         "url": "https://github.com/SShadowS/AL-Flamegraph/issues"
     },
-    "homepage": "https://github.com/SShadowS/AL-Flamegraph#readme"
+    "homepage": "https://github.com/SShadowS/AL-Flamegraph#readme",
+    "dependencies": {
+        "tsc-node": "^0.0.3"
+    }
 }
