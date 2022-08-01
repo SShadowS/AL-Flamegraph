@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
 const fs = require("fs");
+//import { fs } from 'memfs';
 const util = require("util");
 const execPromise = util.promisify(require('child_process').exec);
 const port = 5000;
@@ -26,10 +27,12 @@ function AddLine(element) {
 function ProcessElement(element) {
     processed.push(element.id);
     AddLine(element);
+    var currentCallStack = callStack;
     if (element.children.length > 0) {
         element.children.forEach(element => {
             var child = input.nodes.find(child => child.id == element);
             ProcessElement(child);
+            callStack = currentCallStack;
         });
     }
     ;
@@ -55,17 +58,22 @@ const server = (0, http_1.createServer)((request, response) => {
     switch (request.url) {
         case '/upload': {
             if (request.method === 'POST') {
+                var headers = request.headers;
+                var StripFileHeader = headers['stripfileheader'];
                 const chunks = [];
                 request.on('data', (chunk) => {
                     chunks.push(chunk);
                 });
                 request.on('end', () => {
                     const result = Buffer.concat(chunks).toString();
-                    console.log(result);
                     if (result.length > 0) {
                         input = JSON.parse(result);
                         ProcessData(input).then(finalresult => {
                             if (finalresult.length > 0) {
+                                if (StripFileHeader) {
+                                    finalresult = finalresult.replace(/(?:.*\n){2}/, '');
+                                }
+                                response.setHeader('Content-Type', 'image/svg+xml');
                                 response.end(finalresult);
                                 response.statusCode = 200;
                             }
@@ -115,6 +123,7 @@ async function ConvertFoldedToSVGasync(foldedfile) {
     console.log(`Folded file`);
 }
 function WriteOutputToFile(foldedfile) {
+    // TODO: Sanitize the output with replaceall and don't write the file.
     fs.writeFileSync(foldedfile, output);
 }
 //# sourceMappingURL=converter.js.map

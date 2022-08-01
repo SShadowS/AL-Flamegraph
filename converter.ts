@@ -1,6 +1,7 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { exec } from 'child_process';
 import fs = require('fs');
+//import { fs } from 'memfs';
 import util = require('util');
 const execPromise = util.promisify(require('child_process').exec);
 
@@ -28,10 +29,12 @@ function AddLine(element: any) {
 function ProcessElement(element: any) {
   processed.push(element.id);
   AddLine(element);
+  var currentCallStack: string = callStack;
   if (element.children.length > 0) {
     element.children.forEach(element => {
       var child = input.nodes.find(child => child.id == element);
       ProcessElement(child);
+      callStack = currentCallStack;
     });
   };
 }
@@ -58,6 +61,8 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
   switch (request.url) {
     case '/upload': {
       if (request.method === 'POST') {
+        var headers = request.headers;
+        var StripFileHeader = headers['stripfileheader'];
         const chunks = [];
         request.on('data', (chunk) => {
           chunks.push(chunk);
@@ -68,6 +73,10 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
             input = JSON.parse(result);
             ProcessData(input).then(finalresult => {
               if (finalresult.length > 0) {
+                if (StripFileHeader) {
+                  finalresult = finalresult.replace(/(?:.*\n){2}/, '');
+                }
+                response.setHeader('Content-Type', 'image/svg+xml');
                 response.end(finalresult);
                 response.statusCode = 200;
               } else {
@@ -119,5 +128,6 @@ async function ConvertFoldedToSVGasync(foldedfile: string) {
 }
 
 function WriteOutputToFile(foldedfile: string) {
+  // TODO: Sanitize the output with replaceall and don't write the file.
   fs.writeFileSync(foldedfile, output);
 }
