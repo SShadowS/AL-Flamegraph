@@ -1,7 +1,11 @@
 {
     "cSpell.words": [
         "finalresult",
+        "flamechart",
         "flamegraph",
-        "foldedfile"
+        "foldedfile",
+        "onlyfolded",
+        "Pyroscope",
+        "stripfileheader"
     ]
 }

@@ -3,6 +3,8 @@
       "target": "ES2022",
       "module": "commonjs",
       "outDir": "out",
-      "sourceMap": true
+      "sourceMap": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true
     }
   }
