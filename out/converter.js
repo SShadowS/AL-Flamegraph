@@ -1,10 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const http_1 = require("http");
+const express = require("express");
+const app = express();
 const fs = require("fs");
-//import { fs } from 'memfs';
 const util = require("util");
 const execPromise = util.promisify(require('child_process').exec);
+const Pyroscope = require('@pyroscope/nodejs');
+Pyroscope.init({
+    serverAddress: 'http://192.168.2.77:4040',
+    appName: 'AL-FlameAPI'
+});
+Pyroscope.start();
 const port = 5000;
 let processed = [];
 let callStack;
@@ -37,7 +43,7 @@ function ProcessElement(element) {
     }
     ;
 }
-async function ProcessData(data) {
+async function ProcessData(data, onlyFolded, title, subtitle, colorHeader, width, flamechart) {
     output = "";
     processed = [];
     callStack = "";
@@ -51,15 +57,29 @@ async function ProcessData(data) {
     });
     let foldedfile = "al.folded";
     WriteOutputToFile(foldedfile);
-    return await ConvertFoldedToSVGasync(foldedfile);
+    if (onlyFolded) {
+        return output;
+    }
+    else {
+        return await ConvertFoldedToSVGasync(foldedfile, title, subtitle, colorHeader, width, flamechart);
+    }
 }
 ;
-const server = (0, http_1.createServer)((request, response) => {
+const express_1 = require("express");
+const router = (0, express_1.Router)();
+router.route('/upload').post(async (request, response) => {
     switch (request.url) {
         case '/upload': {
             if (request.method === 'POST') {
+                console.log(`POST called by ${request.connection.remoteAddress}`);
                 var headers = request.headers;
-                var StripFileHeader = headers['stripfileheader'];
+                var stripFileHeader = getBoolean(headers['stripfileheader']);
+                var colorHeader = headers['color'];
+                var onlyFolded = getBoolean(headers['onlyfolded']);
+                var flamechart = getBoolean(headers['flamechart']);
+                var title = headers['title'];
+                var subtitle = headers['subtitle'];
+                var width = +headers['width'];
                 const chunks = [];
                 request.on('data', (chunk) => {
                     chunks.push(chunk);
@@ -68,18 +88,23 @@ const server = (0, http_1.createServer)((request, response) => {
                     const result = Buffer.concat(chunks).toString();
                     if (result.length > 0) {
                         input = JSON.parse(result);
-                        ProcessData(input).then(finalresult => {
+                        ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart).then(finalresult => {
                             if (finalresult.length > 0) {
-                                if (StripFileHeader) {
+                                if (stripFileHeader && !onlyFolded) {
                                     finalresult = finalresult.replace(/(?:.*\n){2}/, '');
                                 }
-                                response.setHeader('Content-Type', 'image/svg+xml');
-                                response.end(finalresult);
+                                if (onlyFolded) {
+                                    response.setHeader('Content-Type', 'text/plain');
+                                }
+                                else {
+                                    response.setHeader('Content-Type', 'image/svg+xml');
+                                }
                                 response.statusCode = 200;
+                                response.end(finalresult);
                             }
                             else {
-                                response.end("Error");
                                 response.statusCode = 500;
+                                response.end("Error");
                             }
                         });
                     }
@@ -109,9 +134,28 @@ const server = (0, http_1.createServer)((request, response) => {
         }
     }
 });
-server.listen(port);
-async function ConvertFoldedToSVGasync(foldedfile) {
+app.use('/', router);
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
+async function ConvertFoldedToSVGasync(foldedfile, title, subtitle, colorHeader, width, flamechart) {
     let command = `./flamegraph.pl ${foldedfile}`;
+    //let command: string = `./flamegraph.pl ${foldedfile} --flamechart --color=aqua --width 1800 --title "Session4 Posting of 12 orders" --subtitle "Free converter live soon"`;
+    if (flamechart) {
+        command += " --flamechart";
+    }
+    if (title != "") {
+        command += ` --title "${title}"`;
+    }
+    if (subtitle != "") {
+        command += ` --subtitle "${subtitle}"`;
+    }
+    if (width > 0) {
+        command += ` --width ${width}`;
+    }
+    if (colorHeader != "") {
+        command += ` --color ${CreateColorOption(colorHeader)}`;
+    }
     try {
         const { stdout, stderr } = await execPromise(command);
         CSVoutput = stdout;
@@ -120,10 +164,34 @@ async function ConvertFoldedToSVGasync(foldedfile) {
     catch (error) {
         console.log(error);
     }
-    console.log(`Folded file`);
 }
 function WriteOutputToFile(foldedfile) {
-    // TODO: Sanitize the output with replaceall and don't write the file.
+    // TODO: Sanitize the output with replace all and don't write the file.
     fs.writeFileSync(foldedfile, output);
+}
+function CreateColorOption(colorHeader) {
+    let colorOption = "";
+    switch (colorHeader) {
+        case "hot":
+            colorOption = "--color=hot";
+        case "blue":
+            colorOption = "--color=blue";
+        case "aqua":
+            colorOption = "--color=aqua";
+    }
+    return colorOption;
+}
+function getBoolean(value) {
+    switch (value) {
+        case true:
+        case "true":
+        case 1:
+        case "1":
+        case "on":
+        case "yes":
+            return true;
+        default:
+            return false;
+    }
 }
 //# sourceMappingURL=converter.js.map
