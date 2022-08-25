@@ -29,12 +29,35 @@ Set the following header fields to trigger different output.
 
 **Data constraints**
 
-The .alcpuprofile file.
+The .alcpuprofile file in Body.
 
 ```json
 {
     Example pending
 }
+```
+
+**HTTP example**
+```
+POST /upload HTTP/1.1
+Host: blogapi.sshadows.dk
+StripFileHeader: false
+color: aqua
+width: 1800
+Content-Type: application/octet-stream
+Content-Length: 22
+
+"<file contents here>"
+```
+**cURL example**
+
+```
+curl --location --request POST 'http://blogapi.sshadows.dk/upload' 
+--header 'StripFileHeader: false' 
+--header 'color: aqua' 
+--header 'width: 1800' 
+--header 'Content-Type: application/octet-stream' 
+--data-binary '@/c:/temp/PerformanceProfile_Session4.alcpuprofile'
 ```
 
 ## Success Response
