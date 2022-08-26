@@ -21,7 +21,7 @@ Set the following header fields to trigger different output.
 | width | Sets the pixel width for the SVG | integer | *
 | stripfileheader | Removes the initial XML part generate by flamegraph.pl script | true or false | *
 | flamechart | If set to true, then exports flamechart instead of flamegraph | true or false | *
-
+| filter | Which extentions to filter out from output | string | Optional
 
 **Auth required** : NO
 
@@ -33,12 +33,40 @@ The .alcpuprofile file in Body.
 
 ```json
 {
-    Example pending
+        "nodes": [
+        {
+            "id": 1,
+            "callFrame": {
+                "functionName": "OnOpenPage",
+                "scriptId": "Page_30",
+                "url": "al-preview://allang/Page/30/Page_30.dal",
+                "lineNumber": 2541,
+                "columnNumber": 8
+            },
+            "hitCount": 1,
+            "children": [
+                2
+            ],
+            "declaringApplication": {
+                "appName": "Base Application",
+                "appPublisher": "Microsoft",
+                "appVersion": "20.0.37253.38230"
+            },
+            "applicationDefinition": {
+                "objectType": "Page",
+                "objectName": "Item Card",
+                "objectId": 30
+            },
+            "frameIdentifier": 268519315
+        },
+        {
+            "id": 2,
+            ...
 }
 ```
 
 **HTTP example**
-```
+```http
 POST /upload HTTP/1.1
 Host: blogapi.sshadows.dk
 StripFileHeader: false
@@ -51,7 +79,7 @@ Content-Length: 22
 ```
 **cURL example**
 
-```
+```bash
 curl --location --request POST 'http://blogapi.sshadows.dk/upload' 
 --header 'StripFileHeader: false' 
 --header 'color: aqua' 
@@ -66,7 +94,7 @@ curl --location --request POST 'http://blogapi.sshadows.dk/upload'
 
 **Content example**
 
-```svg
+```
 {
     Example pending
 }

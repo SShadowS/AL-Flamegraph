@@ -29,9 +29,11 @@ function AddLine(element: any) {
 
   let line: string = "";
   if (callStack != "") {
-    line = `${callStack};${element.callFrame.scriptId}_${element.callFrame.functionName}`;
+    //line = `${callStack};${element.callFrame.scriptId}_${element.callFrame.functionName}`;
+    line = `${callStack};${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   } else {
-    line = `${element.callFrame.scriptId}_${element.callFrame.functionName}`;
+    //line = `${element.callFrame.scriptId}_${element.callFrame.functionName}`;
+    line = `${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   }
   callStack = line;
   output += `${line} ${element.hitCount}\n`;
