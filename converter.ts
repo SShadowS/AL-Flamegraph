@@ -44,14 +44,20 @@ function AddLine(element: any) {
  * then processes each of its children
  * @param {any} element - the element to process
  */
-function ProcessElement(element: any) {
+function ProcessElement(element: any, filter: string) {
   processed.push(element.id);
-  AddLine(element);
+  if (filter) {
+    if ((element.callFrame.functionName == 'IdleTime') || (element.declaringApplication.appName !== filter)) {
+      AddLine(element);
+    }
+  } else {
+    AddLine(element);
+  }
   var currentCallStack: string = callStack;
   if (element.children.length > 0) {
     element.children.forEach(element => {
       var child = input.nodes.find(child => child.id == element);
-      ProcessElement(child);
+      ProcessElement(child, filter);
       callStack = currentCallStack;
     });
   };
@@ -74,7 +80,7 @@ function ProcessElement(element: any) {
  * be a standard flamegraph
  * @returns a promise.
  */
-async function ProcessData(data: any, onlyFolded: boolean, title: string, subtitle: string, colorHeader: string, width: number, flamechart: boolean) {
+async function ProcessData(data: any, onlyFolded: boolean, title: string, subtitle: string, colorHeader: string, width: number, flamechart: boolean, filter: string) {
   output = "";
   processed = [];
   callStack = "";
@@ -83,7 +89,7 @@ async function ProcessData(data: any, onlyFolded: boolean, title: string, subtit
     if (!processed.includes(element.id)) {
       callStack = "";
       processed.push(element.id);
-      ProcessElement(element);
+      ProcessElement(element, filter);
     }
   });
 
@@ -112,6 +118,9 @@ router.post('/upload', async (request: express.Request, response: express.Respon
   var title: string = headers['title'] as string;
   var subtitle = headers['subtitle'] as string;
   var width: number = +headers['width'];
+  var fromunix: string = headers['fromunix'] as string;
+  var tounix: string = headers['tounix'] as string;
+  var filter: string = headers['filter'] as string;
   const chunks = [];
   
   /* Taking the data from the request, and putting it into an array. */
@@ -132,7 +141,7 @@ router.post('/upload', async (request: express.Request, response: express.Respon
       /* Calling the ProcessData function, and then it is checking the result. If the result is not empty, it
       will set the header to either text/plain or image/svg+xml, and then it will return the result. If
       the result is empty, it will return a 500 error. */
-      ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart).then(finalresult => {
+      ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter).then(finalresult => {
         if (finalresult.length > 0) {
           if (stripFileHeader && !onlyFolded) {
             finalresult = finalresult.replace(/(?:.*\n){2}/, '');
@@ -143,6 +152,14 @@ router.post('/upload', async (request: express.Request, response: express.Respon
           } else {
             response.setHeader('Content-Type', 'image/svg+xml');
           }
+
+          if (fromunix) {
+            response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix));
+          }
+          if (tounix) {
+            response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix));
+          }
+
           response.statusCode = 200;
           response.end(finalresult);
 
@@ -278,4 +295,8 @@ function getBoolean(value) {
     default:
       return false;
   }
+}
+
+function convertDateTimeToUnixTimestamp(value) {
+  return Date.parse(value);
 }

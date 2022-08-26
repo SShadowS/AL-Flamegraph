@@ -107,3 +107,5 @@ dist
 output.txt
 al.svg
 encoded*.txt
+al.folded
+input.json
