@@ -4,6 +4,8 @@ This service will generate either so-called folded files or SVG based on **.alcp
 
 The SVGs are generated using [FlameGraph by Brendan Gregg](https://github.com/brendangregg/FlameGraph)
 
+Quick note:
+*This is made in Typescript by someone who doesn't know Typescript. But you got to start somewhere.*
 
 **URL** : `/upload`
 
