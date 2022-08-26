@@ -4,6 +4,8 @@ import fs = require('fs');
 import util = require('util');
 const execPromise = util.promisify(require('child_process').exec);
 const Pyroscope = require('@pyroscope/nodejs');
+import { v4 as uuidv4 } from 'uuid';
+import validator from 'validator';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -18,21 +20,18 @@ let callStack: string;
 let input: any;
 let output: string;
 let CSVoutput: string;
+let debug: boolean = true || getBoolean(process.env.DEBUG);
+let randomUUID: string = "";
 
 /**
  * The function takes a call stack element and adds it to the output string
  * @param {any} element - any - This is the element that is passed to the function.
  */
 function AddLine(element: any) {
-  // Sample output from Linux kernel
-  // swapper;start_kernel;rest_init;cpu_idle;default_idle;native_safe_halt 1
-
   let line: string = "";
   if (callStack != "") {
-    //line = `${callStack};${element.callFrame.scriptId}_${element.callFrame.functionName}`;
     line = `${callStack};${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   } else {
-    //line = `${element.callFrame.scriptId}_${element.callFrame.functionName}`;
     line = `${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   }
   callStack = line;
@@ -43,6 +42,7 @@ function AddLine(element: any) {
  * > ProcessElement takes an element, adds it to the processed list, adds a line to the output, and
  * then processes each of its children
  * @param {any} element - the element to process
+ * @param {string} filter - the name of the extension to filter the output by.
  */
 function ProcessElement(element: any, filter: string) {
   processed.push(element.id);
@@ -78,9 +78,10 @@ function ProcessElement(element: any, filter: string) {
  * @param {number} width - The width of the SVG in pixels.
  * @param {boolean} flamechart - boolean - if true, the output will be a flamechart, if false, it will
  * be a standard flamegraph
+ * @param {string} filter - The name of the extension to filter the output by.
  * @returns a promise.
  */
-async function ProcessData(data: any, onlyFolded: boolean, title: string, subtitle: string, colorHeader: string, width: number, flamechart: boolean, filter: string) {
+async function ProcessData(data: any, onlyFolded: boolean, title: string, subtitle: string, colorHeader: string, width: number, flamechart: boolean, filter: string): Promise<string> {
   output = "";
   processed = [];
   callStack = "";
@@ -93,7 +94,7 @@ async function ProcessData(data: any, onlyFolded: boolean, title: string, subtit
     }
   });
 
-  let foldedfile: string = "al.folded";
+  let foldedfile: string = `./log/processed/${randomUUID}.folded`;
   WriteOutputToFile(foldedfile);
   if (onlyFolded) {
     return output;
@@ -106,23 +107,27 @@ import { Router } from 'express';
 
 const router = Router();
 router.post('/upload', async (request: express.Request, response: express.Response) => {
+  randomUUID = uuidv4();
+
   /* Logging the IP address of the client that is calling the API. */
-  console.log(`POST called by ${request.connection.remoteAddress}`);
+  if (debug) {
+    console.log(`POST called by ${request.connection.remoteAddress} - ${randomUUID}`);
+  }
 
   /* Getting the headers from the request, and converting them to the correct type. */
   var headers = request.headers;
-  var stripFileHeader = getBoolean(headers['stripfileheader']);
-  var colorHeader = headers['color'] as string;
-  var onlyFolded = getBoolean(headers['onlyfolded']);
-  var flamechart = getBoolean(headers['flamechart']);
+  var stripFileHeader: boolean = getBoolean(headers['stripfileheader']);
+  var colorHeader: string = headers['color'] as string;
+  var onlyFolded: boolean = getBoolean(headers['onlyfolded']);
+  var flamechart: boolean = getBoolean(headers['flamechart']);
   var title: string = headers['title'] as string;
-  var subtitle = headers['subtitle'] as string;
+  var subtitle: string = headers['subtitle'] as string;
   var width: number = +headers['width'];
   var fromunix: string = headers['fromunix'] as string;
   var tounix: string = headers['tounix'] as string;
   var filter: string = headers['filter'] as string;
   const chunks = [];
-  
+
   /* Taking the data from the request, and putting it into an array. */
   request.on('data', (chunk) => {
     chunks.push(chunk);
@@ -132,42 +137,55 @@ router.post('/upload', async (request: express.Request, response: express.Respon
   request.on('end', () => {
     const result = Buffer.concat(chunks).toString();
     if (result.length > 0) {
-      //Debug
       /* Writing the input to a file. */
-      //fs.writeFileSync('input.json', result);
+      if (debug) {
+        console.log(`Writing input to file.`);
+        fs.writeFileSync(`./log/input/${randomUUID}.json`, result);
+      }
 
       input = JSON.parse(result);
-      
+
       /* Calling the ProcessData function, and then it is checking the result. If the result is not empty, it
       will set the header to either text/plain or image/svg+xml, and then it will return the result. If
       the result is empty, it will return a 500 error. */
-      ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter).then(finalresult => {
-        if (finalresult.length > 0) {
-          if (stripFileHeader && !onlyFolded) {
-            finalresult = finalresult.replace(/(?:.*\n){2}/, '');
-          }
+        ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter).then(finalresult => {
+          if (finalresult.length > 0) {
+            if (stripFileHeader && !onlyFolded) {
+              finalresult = finalresult.replace(/(?:.*\n){2}/, '');
+            }
+            /* Writing the input to a file. */
+            if (debug) {
+              console.log(`Writing output to file.`);
+              if (onlyFolded) {
+                fs.writeFileSync(`./log/output/${randomUUID}.folded`, finalresult);
+              } else {
+                fs.writeFileSync(`./log/output/${randomUUID}.svg`, result);
+              }
+            }
 
-          if (onlyFolded) {
-            response.setHeader('Content-Type', 'text/plain');
+            if (onlyFolded) {
+              response.setHeader('Content-Type', 'text/plain');
+            } else {
+              response.setHeader('Content-Type', 'image/svg+xml');
+            }
+
+            if (fromunix) {
+              response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix));
+            }
+            if (tounix) {
+              response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix));
+            }
+
+            response.statusCode = 200;
+            response.end(finalresult);
+            fs.rm(`./log/processed/${randomUUID}.folded`, (exception) => (
+              console.log(`Cleanup from session ${randomUUID}`)
+            ));
           } else {
-            response.setHeader('Content-Type', 'image/svg+xml');
+            response.statusCode = 500;
+            response.end("Error");
           }
-
-          if (fromunix) {
-            response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix));
-          }
-          if (tounix) {
-            response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix));
-          }
-
-          response.statusCode = 200;
-          response.end(finalresult);
-
-        } else {
-          response.statusCode = 500;
-          response.end("Error");
-        }
-      })
+        })
     } else {
       response.statusCode = 500;
       response.end();
@@ -222,11 +240,11 @@ async function ConvertFoldedToSVGasync(foldedfile: string, title: string, subtit
   }
 
   if (title) {
-    command += ` --title "${title}"`;
+    command += ` --title "${validator.stripLow(validator.escape(title))}"`;
   }
 
   if (subtitle) {
-    command += ` --subtitle "${subtitle}"`;
+    command += ` --subtitle "${validator.stripLow(validator.escape(subtitle))}"`;
   }
 
   if (width > 0) {
@@ -253,6 +271,7 @@ async function ConvertFoldedToSVGasync(foldedfile: string, title: string, subtit
 /**
  * This function takes a string as an argument and writes the contents of the output variable to a file
  * with the name of the string.
+ * This is to prevent command injection, which currently is possible if parsed via piping to flamegraph.pl
  * @param {string} foldedfile - The name of the file to write the output to.
  */
 function WriteOutputToFile(foldedfile: string) {
@@ -297,6 +316,11 @@ function getBoolean(value) {
   }
 }
 
+/**
+ * Convert a date/time string to a Unix timestamp.
+ * @param value - The date/time string to convert.
+ * @returns The number of milliseconds since January 1, 1970, 00:00:00 UTC.
+ */
 function convertDateTimeToUnixTimestamp(value) {
   return Date.parse(value);
 }

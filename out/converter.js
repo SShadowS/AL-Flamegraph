@@ -6,6 +6,7 @@ const fs = require("fs");
 const util = require("util");
 const execPromise = util.promisify(require('child_process').exec);
 const Pyroscope = require('@pyroscope/nodejs');
+const uuid_1 = require("uuid");
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
     serverAddress: 'http://192.168.2.77:4040',
@@ -18,20 +19,18 @@ let callStack;
 let input;
 let output;
 let CSVoutput;
+let debug = true || getBoolean(process.env.DEBUG);
+let randomUUID = "";
 /**
  * The function takes a call stack element and adds it to the output string
  * @param {any} element - any - This is the element that is passed to the function.
  */
 function AddLine(element) {
-    // Sample output from Linux kernel
-    // swapper;start_kernel;rest_init;cpu_idle;default_idle;native_safe_halt 1
     let line = "";
     if (callStack != "") {
-        //line = `${callStack};${element.callFrame.scriptId}_${element.callFrame.functionName}`;
         line = `${callStack};${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
     }
     else {
-        //line = `${element.callFrame.scriptId}_${element.callFrame.functionName}`;
         line = `${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
     }
     callStack = line;
@@ -41,6 +40,7 @@ function AddLine(element) {
  * > ProcessElement takes an element, adds it to the processed list, adds a line to the output, and
  * then processes each of its children
  * @param {any} element - the element to process
+ * @param {string} filter - the name of the extension to filter the output by.
  */
 function ProcessElement(element, filter) {
     processed.push(element.id);
@@ -77,6 +77,7 @@ function ProcessElement(element, filter) {
  * @param {number} width - The width of the SVG in pixels.
  * @param {boolean} flamechart - boolean - if true, the output will be a flamechart, if false, it will
  * be a standard flamegraph
+ * @param {string} filter - The name of the extension to filter the output by.
  * @returns a promise.
  */
 async function ProcessData(data, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter) {
@@ -91,7 +92,7 @@ async function ProcessData(data, onlyFolded, title, subtitle, colorHeader, width
             ProcessElement(element, filter);
         }
     });
-    let foldedfile = "al.folded";
+    let foldedfile = `./log/processed/${randomUUID}.folded`;
     WriteOutputToFile(foldedfile);
     if (onlyFolded) {
         return output;
@@ -104,8 +105,11 @@ async function ProcessData(data, onlyFolded, title, subtitle, colorHeader, width
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 router.post('/upload', async (request, response) => {
+    randomUUID = (0, uuid_1.v4)();
     /* Logging the IP address of the client that is calling the API. */
-    console.log(`POST called by ${request.connection.remoteAddress}`);
+    if (debug) {
+        console.log(`POST called by ${request.connection.remoteAddress} - ${randomUUID}`);
+    }
     /* Getting the headers from the request, and converting them to the correct type. */
     var headers = request.headers;
     var stripFileHeader = getBoolean(headers['stripfileheader']);
@@ -127,9 +131,11 @@ router.post('/upload', async (request, response) => {
     request.on('end', () => {
         const result = Buffer.concat(chunks).toString();
         if (result.length > 0) {
-            //Debug
             /* Writing the input to a file. */
-            //fs.writeFileSync('input.json', result);
+            if (debug) {
+                console.log(`Writing input to file.`);
+                fs.writeFileSync(`./log/input/${randomUUID}.json`, result);
+            }
             input = JSON.parse(result);
             /* Calling the ProcessData function, and then it is checking the result. If the result is not empty, it
             will set the header to either text/plain or image/svg+xml, and then it will return the result. If
@@ -138,6 +144,16 @@ router.post('/upload', async (request, response) => {
                 if (finalresult.length > 0) {
                     if (stripFileHeader && !onlyFolded) {
                         finalresult = finalresult.replace(/(?:.*\n){2}/, '');
+                    }
+                    /* Writing the input to a file. */
+                    if (debug) {
+                        console.log(`Writing output to file.`);
+                        if (onlyFolded) {
+                            fs.writeFileSync(`./log/output/${randomUUID}.folded`, finalresult);
+                        }
+                        else {
+                            fs.writeFileSync(`./log/output/${randomUUID}.svg`, result);
+                        }
                     }
                     if (onlyFolded) {
                         response.setHeader('Content-Type', 'text/plain');
@@ -153,6 +169,7 @@ router.post('/upload', async (request, response) => {
                     }
                     response.statusCode = 200;
                     response.end(finalresult);
+                    fs.rm(`./log/processed/${randomUUID}.folded`, exception => (console.log(exception)));
                 }
                 else {
                     response.statusCode = 500;
@@ -273,6 +290,11 @@ function getBoolean(value) {
             return false;
     }
 }
+/**
+ * Convert a date/time string to a Unix timestamp.
+ * @param value - The date/time string to convert.
+ * @returns The number of milliseconds since January 1, 1970, 00:00:00 UTC.
+ */
 function convertDateTimeToUnixTimestamp(value) {
     return Date.parse(value);
 }

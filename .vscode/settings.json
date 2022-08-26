@@ -8,6 +8,7 @@
         "onlyfolded",
         "Pyroscope",
         "stripfileheader",
-        "tounix"
+        "tounix",
+        "uuidv"
     ]
 }
