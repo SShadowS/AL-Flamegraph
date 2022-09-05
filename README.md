@@ -9,6 +9,8 @@ Quick note:
 
 **URL** : `/upload`
 
+(Free webservice up at: http(s)://blogapi.sshadows.dk/upload)
+
 **Method** : `POST`
 
 **Header options** : 
