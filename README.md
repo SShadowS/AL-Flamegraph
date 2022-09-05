@@ -34,6 +34,7 @@ Set the following header fields to trigger different output.
 **Data constraints**
 
 The .alcpuprofile file in Body.
+Currently max size is 100MB.
 
 ```json
 {
