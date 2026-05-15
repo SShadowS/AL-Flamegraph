@@ -16,6 +16,10 @@
     "main": "out/src/index.js",
     "scripts": {
         "test": "vitest run",
+        "test:cov": "vitest run --coverage",
+        "test:unit": "vitest run --project unit",
+        "test:int": "vitest run --project integration",
+        "test:e2e": "vitest run --project e2e",
         "dev": "nodemon",
         "start": "ts-node src/index.ts",
         "build": "tsc -p tsconfig.json",
