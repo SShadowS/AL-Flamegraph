@@ -6,6 +6,7 @@ const execPromise = util.promisify(require('child_process').exec);
 const Pyroscope = require('@pyroscope/nodejs');
 import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
+import { getBoolean } from './src/lib/booleans';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -297,24 +298,6 @@ function CreateColorOption(colorHeader: string) {
   return colorOption;
 }
 
-/**
- * If the value is true, true, 1, "1", "on", or "yes", return true, otherwise return false.
- * @param value - The value to convert to a boolean.
- * @returns A boolean value.
- */
-function getBoolean(value) {
-  switch (value) {
-    case true:
-    case "true":
-    case 1:
-    case "1":
-    case "on":
-    case "yes":
-      return true;
-    default:
-      return false;
-  }
-}
 
 /**
  * Convert a date/time string to a Unix timestamp.
