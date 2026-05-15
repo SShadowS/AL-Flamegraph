@@ -81,13 +81,14 @@ d('POST /upload (real flamegraph.pl)', () => {
     expect(r.status).toBe(400);
   });
 
-  it.fails('Fixes.md #9: rejects request body above size limit', async () => {
+  it('Fixes.md #9 fixed: rejects request body above 50MB', async () => {
+    // Body is ~100MB, exceeds the 50MB limit configured via express.raw.
     const huge = '{"nodes":[' + '0,'.repeat(50 * 1024 * 1024) + 'null]}';
     const r = await request(app)
       .post('/upload')
       .set('Content-Type', 'application/octet-stream')
       .send(huge);
-    expect([400, 413]).toContain(r.status);
+    expect(r.status).toBe(413);
   }, 60000);
 
   it.fails('Fixes.md #4: SVG logged to ./log/output/<uuid>.svg contains SVG, not raw JSON', async () => {

@@ -18,7 +18,7 @@ export function createApp(deps: AppDeps = {}): express.Express {
   const flamegraph = deps.flamegraph ?? convertFoldedToSVG;
   const router = Router();
 
-  router.post('/upload', async (request: express.Request, response: express.Response) => {
+  router.post('/upload', express.raw({ type: '*/*', limit: '50mb' }), async (request: express.Request, response: express.Response) => {
     const requestId = uuidv4();
 
     if (debug) {
@@ -36,55 +36,52 @@ export function createApp(deps: AppDeps = {}): express.Express {
     const fromunix: string = headers['fromunix'] as string;
     const tounix: string = headers['tounix'] as string;
     const filter: string = headers['filter'] as string;
-    const chunks: Buffer[] = [];
 
-    request.on('data', (chunk) => { chunks.push(chunk); });
+    const body = request.body as Buffer;
+    const result = body ? body.toString() : '';
+    if (result.length === 0) {
+      response.statusCode = 500;
+      response.end();
+      return;
+    }
 
-    request.on('end', () => {
-      const result = Buffer.concat(chunks).toString();
-      if (result.length > 0) {
-        if (debug) {
-          console.log(`Writing input to file.`);
-          fs.writeFileSync(`./log/input/${requestId}.json`, result);
+    if (debug) {
+      console.log(`Writing input to file.`);
+      fs.writeFileSync(`./log/input/${requestId}.json`, result);
+    }
+    const input = JSON.parse(result);
+
+    ProcessData(input, requestId, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph).then((result_data) => {
+      let finalresult = result_data.output;
+      if (finalresult && finalresult.length > 0) {
+        if (stripFileHeader && !onlyFolded) {
+          finalresult = finalresult.replace(/(?:.*\n){2}/, '');
         }
-        const input = JSON.parse(result);
-
-        ProcessData(input, requestId, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph).then((result_data) => {
-          let finalresult = result_data.output;
-          if (finalresult && finalresult.length > 0) {
-            if (stripFileHeader && !onlyFolded) {
-              finalresult = finalresult.replace(/(?:.*\n){2}/, '');
-            }
-            if (debug) {
-              console.log(`Writing output to file.`);
-              if (onlyFolded) {
-                fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
-              } else {
-                fs.writeFileSync(`./log/output/${requestId}.svg`, result);
-              }
-            }
-            if (onlyFolded) {
-              response.setHeader('Content-Type', 'text/plain');
-            } else {
-              response.setHeader('Content-Type', 'image/svg+xml');
-            }
-            if (fromunix) {
-              response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix).toString());
-            }
-            if (tounix) {
-              response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix).toString());
-            }
-            response.statusCode = 200;
-            response.end(finalresult);
-            cleanupFolded(`./log/processed/${requestId}.folded`, requestId);
+        if (debug) {
+          console.log(`Writing output to file.`);
+          if (onlyFolded) {
+            fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
           } else {
-            response.statusCode = 500;
-            response.end("Error");
+            fs.writeFileSync(`./log/output/${requestId}.svg`, result);
           }
-        });
+        }
+        if (onlyFolded) {
+          response.setHeader('Content-Type', 'text/plain');
+        } else {
+          response.setHeader('Content-Type', 'image/svg+xml');
+        }
+        if (fromunix) {
+          response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix).toString());
+        }
+        if (tounix) {
+          response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix).toString());
+        }
+        response.statusCode = 200;
+        response.end(finalresult);
+        cleanupFolded(`./log/processed/${requestId}.folded`, requestId);
       } else {
         response.statusCode = 500;
-        response.end();
+        response.end("Error");
       }
     });
   });
