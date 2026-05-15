@@ -1,5 +1,4 @@
-import * as express from 'express';
-import { Router } from 'express';
+import express, { Router } from 'express';
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { getBoolean } from './lib/booleans';

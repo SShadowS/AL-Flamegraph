@@ -110,3 +110,4 @@ encoded*.txt
 al.folded
 input.json
 /log/
+coverage/

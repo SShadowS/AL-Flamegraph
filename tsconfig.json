@@ -1,10 +1,16 @@
 {
-    "compilerOptions": {
-      "target": "ES2022",
-      "module": "commonjs",
-      "outDir": "out",
-      "sourceMap": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true
-    }
-  }
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "outDir": "out",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*", "converter.ts", "test/**/*", "vitest.setup.ts"]
+}
