@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import * as fs from 'fs';
-import { ProcessData, setRandomUUID, state } from '../../src/lib/profile';
+import { ProcessData } from '../../src/lib/profile';
 import { loadRealRaw } from '../helpers/fixtures';
 
 const noopFlame = async () => '<svg/>';
@@ -26,10 +26,9 @@ beforeEach(() => {
 describe('ProcessData against real fixtures (safe set)', () => {
   for (const name of SAFE_FIXTURES) {
     it(`produces non-empty folded output for ${name}`, async () => {
-      setRandomUUID('real-' + name);
       const data = JSON.parse(loadRealRaw(name));
-      await ProcessData(data, true, '', '', '', 0, false, '', noopFlame);
-      const lines = state.output.split('\n').filter(Boolean);
+      const result = await ProcessData(data, 'real-' + name, true, '', '', '', 0, false, '', noopFlame);
+      const lines = result.output.split('\n').filter(Boolean);
       expect(lines.length).toBeGreaterThan(0);
       for (const line of lines) {
         // Folded format: <stack> <hitCount>. Stack frames may contain spaces (objectName).
@@ -38,9 +37,8 @@ describe('ProcessData against real fixtures (safe set)', () => {
     });
 
     it(`writes folded file to ./log/processed for ${name}`, async () => {
-      setRandomUUID('real-write-' + name);
       const data = JSON.parse(loadRealRaw(name));
-      await ProcessData(data, true, '', '', '', 0, false, '', noopFlame);
+      await ProcessData(data, 'real-write-' + name, true, '', '', '', 0, false, '', noopFlame);
       const path = `./log/processed/real-write-${name}.folded`;
       expect(fs.existsSync(path)).toBe(true);
     });
@@ -50,20 +48,18 @@ describe('ProcessData against real fixtures (safe set)', () => {
 describe('ProcessData against real fixtures (crashing set — Fixes.md #38)', () => {
   for (const name of CRASHING_FIXTURES) {
     it.fails(`Fixes.md #38: ${name} processes without TypeError on missing objectType`, async () => {
-      setRandomUUID('real-' + name);
       const data = JSON.parse(loadRealRaw(name));
-      await ProcessData(data, true, '', '', '', 0, false, '', noopFlame);
+      const result = await ProcessData(data, 'real-' + name, true, '', '', '', 0, false, '', noopFlame);
       // If we reach here, the bug is fixed.
-      expect(state.output.length).toBeGreaterThan(0);
+      expect(result.output.length).toBeGreaterThan(0);
     });
   }
 });
 
 describe('cleanup behavior', () => {
   it.fails('Fixes.md #20: folded file is cleaned up after onlyFolded=true call', async () => {
-    setRandomUUID('cleanup-test');
     const data = JSON.parse(loadRealRaw('session-2738d76b.alcpuprofile'));
-    await ProcessData(data, true, '', '', '', 0, false, '', noopFlame);
+    await ProcessData(data, 'cleanup-test', true, '', '', '', 0, false, '', noopFlame);
     await new Promise(r => setTimeout(r, 100));
     expect(fs.existsSync('./log/processed/cleanup-test.folded')).toBe(false);
   });

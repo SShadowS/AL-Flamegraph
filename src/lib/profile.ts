@@ -1,21 +1,15 @@
 import * as fs from 'fs';
 
-export const state = {
-  processed: [] as number[],
-  callStack: "" as string,
-  input: undefined as any,
-  output: "" as string,
-  CSVoutput: "" as string,
-  randomUUID: "" as string,
-};
-
-export function setRandomUUID(uuid: string): void {
-  state.randomUUID = uuid;
+interface ProfileState {
+  processed: Set<number>;
+  callStack: string;
+  input: any;
+  output: string;
 }
 
-export function AddLine(element: any): void {
+function AddLine(state: ProfileState, element: any): void {
   let line: string = "";
-  if (state.callStack != "") {
+  if (state.callStack !== "") {
     line = `${state.callStack};${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   } else {
     line = `${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
@@ -24,20 +18,20 @@ export function AddLine(element: any): void {
   state.output += `${line} ${element.hitCount}\n`;
 }
 
-export function ProcessElement(element: any, filter: string): void {
-  state.processed.push(element.id);
+function ProcessElement(state: ProfileState, element: any, filter: string): void {
+  state.processed.add(element.id);
   if (filter) {
     if ((element.callFrame.functionName == 'IdleTime') || (element.declaringApplication.appName !== filter)) {
-      AddLine(element);
+      AddLine(state, element);
     }
   } else {
-    AddLine(element);
+    AddLine(state, element);
   }
   const currentCallStack: string = state.callStack;
   if (element.children.length > 0) {
     element.children.forEach((childId: any) => {
       const child = state.input.nodes.find((n: any) => n.id == childId);
-      ProcessElement(child, filter);
+      ProcessElement(state, child, filter);
       state.callStack = currentCallStack;
     });
   }
@@ -45,6 +39,7 @@ export function ProcessElement(element: any, filter: string): void {
 
 export async function ProcessData(
   data: any,
+  randomUUID: string,
   onlyFolded: boolean,
   title: string,
   subtitle: string,
@@ -53,25 +48,28 @@ export async function ProcessData(
   flamechart: boolean,
   filter: string,
   convertFoldedToSVG: (foldedFile: string, t: string, st: string, c: string, w: number, fc: boolean) => Promise<string>,
-): Promise<string> {
-  state.output = "";
-  state.processed = [];
-  state.callStack = "";
-  state.CSVoutput = "";
-  state.input = data;
+): Promise<{ folded: string; output: string }> {
+  const state: ProfileState = {
+    processed: new Set<number>(),
+    callStack: "",
+    input: data,
+    output: "",
+  };
+
   data.nodes.forEach((element: any) => {
-    if (!state.processed.includes(element.id)) {
+    if (!state.processed.has(element.id)) {
       state.callStack = "";
-      state.processed.push(element.id);
-      ProcessElement(element, filter);
+      state.processed.add(element.id);
+      ProcessElement(state, element, filter);
     }
   });
 
-  const foldedfile: string = `./log/processed/${state.randomUUID}.folded`;
+  const foldedfile: string = `./log/processed/${randomUUID}.folded`;
   fs.writeFileSync(foldedfile, state.output);
   if (onlyFolded) {
-    return state.output;
+    return { folded: foldedfile, output: state.output };
   } else {
-    return await convertFoldedToSVG(foldedfile, title, subtitle, colorHeader, width, flamechart);
+    const svg = await convertFoldedToSVG(foldedfile, title, subtitle, colorHeader, width, flamechart);
+    return { folded: foldedfile, output: svg };
   }
 }

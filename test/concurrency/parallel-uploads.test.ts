@@ -33,21 +33,15 @@ function makeDeferredMockFlamegraph() {
 
 describe('concurrent uploads (Fixes.md #1 — shared state race)', () => {
   /**
-   * Test 1 – cleanupFolded receives the wrong sessionId for all but the last request.
+   * Test 1 – cleanupFolded receives the correct sessionId for each request.
    *
-   * The server calls `setRandomUUID(uuidv4())` at the TOP of each request
-   * (server.ts:22).  After all 10 requests have called setRandomUUID, state.randomUUID
-   * holds the UUID of the LAST request.  When the .then() callbacks resolve
-   * (after the deferred mock yields), every cleanupFolded call passes
-   * `profileState.randomUUID` — which is now the same value for all 10.
+   * With per-request state, each request has its own requestId (uuidv4()).
+   * When the .then() callbacks resolve, each cleanupFolded call passes
+   * the request-local requestId — which is unique per request.
    *
    * We spy on `cleanupFolded` and assert that it receives 10 DISTINCT sessionIds.
-   * Today it receives 10 copies of the same sessionId — the race is present.
-   *
-   * .fails: all 10 sessionIds are identical today; test will turn green once
-   * each request has its own isolated state (Fixes.md #1 fixed).
    */
-  it.fails('Fixes.md #1: 10 parallel uploads each pass their own sessionId to cleanupFolded', async () => {
+  it('Fixes.md #1 fixed: 10 parallel uploads each clean up their own folded file', async () => {
     const fsHelpers = await import('../../src/lib/fs-helpers');
     const sessionIds: string[] = [];
     const spy = vi.spyOn(fsHelpers, 'cleanupFolded').mockImplementation((_file, sessionId) => {
@@ -74,7 +68,6 @@ describe('concurrent uploads (Fixes.md #1 — shared state race)', () => {
       responses.forEach(r => expect(r.status).toBe(200));
 
       // Each request should have passed its OWN UUID to cleanupFolded.
-      // Today all 10 are identical — the race fires.
       expect(sessionIds).toHaveLength(10);
       const uniqueIds = new Set(sessionIds);
       expect(uniqueIds.size).toBe(10);
@@ -84,24 +77,17 @@ describe('concurrent uploads (Fixes.md #1 — shared state race)', () => {
   });
 
   /**
-   * Test 2 – direct ProcessData concurrency with observable state.output corruption.
+   * Test 2 – direct ProcessData concurrency: each call returns its own output.
    *
-   * We call ProcessData 10 times "concurrently" (all promises in-flight at once).
-   * After each ProcessData completes (it is synchronous internally), we yield one
-   * event-loop tick, allowing all OTHER parallel calls to also complete and
-   * overwrite state.output.  We then read state.output: if the race fires (as it
-   * does today), we get the LAST call's output rather than our own.
-   *
-   * .fails: at least one captured result differs from its serial baseline because
-   * state.output was overwritten by a sibling call.  Once requests have isolated
-   * state, each parallel result will match its own serial baseline.
+   * With per-request state, each ProcessData call has its own local state object.
+   * There is no shared state.output to corrupt. Each parallel result must match
+   * its serially-computed baseline.
    */
-  it.fails('Fixes.md #1: direct ProcessData race — parallel calls corrupt each other\'s state.output', async () => {
-    const profileModule = await import('../../src/lib/profile');
-    const { setRandomUUID } = profileModule;
+  it('Fixes.md #1 fixed: 10 parallel ProcessData calls each return their own output', async () => {
+    const { ProcessData } = await import('../../src/lib/profile');
 
     const body = loadRealRaw(SAFE_FIXTURE);
-    const parsed = JSON.parse(body);
+    const data = JSON.parse(body);
     const filters = [
       '', 'Base Application', 'Microsoft', 'Custom Ext', 'X',
       '', 'Base Application', 'Microsoft', 'Custom Ext', 'X',
@@ -109,26 +95,19 @@ describe('concurrent uploads (Fixes.md #1 — shared state race)', () => {
 
     // Compute serial baselines first.
     const expected: string[] = [];
-    for (const filter of filters) {
-      setRandomUUID('serial-' + filter + '-' + Math.random());
-      await profileModule.ProcessData(parsed, true, '', '', '', 0, false, filter, async () => '');
-      expected.push(profileModule.state.output);
+    for (let i = 0; i < filters.length; i++) {
+      const r = await ProcessData(JSON.parse(JSON.stringify(data)), `serial-${i}`, true, '', '', '', 0, false, filters[i], async () => '');
+      expected.push(r.output);
     }
 
-    // Parallel run: all 10 promises are started without awaiting each other.
-    // After ProcessData runs synchronously, we yield one tick so other in-flight
-    // calls can run to completion and overwrite state.output before we capture it.
-    const results = await Promise.all(filters.map(async (filter, i) => {
-      setRandomUUID('par-' + i);
-      await profileModule.ProcessData(parsed, true, '', '', '', 0, false, filter, async () => '');
-      // Yield: other parallel calls now run and overwrite state.output.
-      await new Promise<void>(resolve => setImmediate(resolve));
-      // Capture state.output — if the race fired, this is the LAST call's output.
-      return profileModule.state.output;
-    }));
+    // Parallel run: all 10 promises started at once.
+    const promises = filters.map((filter, i) =>
+      ProcessData(JSON.parse(JSON.stringify(data)), `parallel-${i}`, true, '', '', '', 0, false, filter, async () => '')
+    );
+    const results = await Promise.all(promises);
 
-    results.forEach((result, i) => {
-      expect(result).toBe(expected[i]);
+    results.forEach((r, i) => {
+      expect(r.output).toBe(expected[i]);
     });
   });
 });

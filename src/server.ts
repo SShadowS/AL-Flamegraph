@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { getBoolean } from './lib/booleans';
 import { convertDateTimeToUnixTimestamp } from './lib/dates';
-import { ProcessData, setRandomUUID, state as profileState } from './lib/profile';
+import { ProcessData } from './lib/profile';
 import { convertFoldedToSVG } from './lib/flamegraph';
 import { cleanupFolded } from './lib/fs-helpers';
 
@@ -19,10 +19,10 @@ export function createApp(deps: AppDeps = {}): express.Express {
   const router = Router();
 
   router.post('/upload', async (request: express.Request, response: express.Response) => {
-    setRandomUUID(uuidv4());
+    const requestId = uuidv4();
 
     if (debug) {
-      console.log(`POST called by ${request.connection.remoteAddress} - ${profileState.randomUUID}`);
+      console.log(`POST called by ${request.connection.remoteAddress} - ${requestId}`);
     }
 
     const headers = request.headers;
@@ -45,11 +45,12 @@ export function createApp(deps: AppDeps = {}): express.Express {
       if (result.length > 0) {
         if (debug) {
           console.log(`Writing input to file.`);
-          fs.writeFileSync(`./log/input/${profileState.randomUUID}.json`, result);
+          fs.writeFileSync(`./log/input/${requestId}.json`, result);
         }
         const input = JSON.parse(result);
 
-        ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph).then((finalresult: string) => {
+        ProcessData(input, requestId, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph).then((result_data) => {
+          let finalresult = result_data.output;
           if (finalresult && finalresult.length > 0) {
             if (stripFileHeader && !onlyFolded) {
               finalresult = finalresult.replace(/(?:.*\n){2}/, '');
@@ -57,9 +58,9 @@ export function createApp(deps: AppDeps = {}): express.Express {
             if (debug) {
               console.log(`Writing output to file.`);
               if (onlyFolded) {
-                fs.writeFileSync(`./log/output/${profileState.randomUUID}.folded`, finalresult);
+                fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
               } else {
-                fs.writeFileSync(`./log/output/${profileState.randomUUID}.svg`, result);
+                fs.writeFileSync(`./log/output/${requestId}.svg`, result);
               }
             }
             if (onlyFolded) {
@@ -75,7 +76,7 @@ export function createApp(deps: AppDeps = {}): express.Express {
             }
             response.statusCode = 200;
             response.end(finalresult);
-            cleanupFolded(`./log/processed/${profileState.randomUUID}.folded`, profileState.randomUUID);
+            cleanupFolded(`./log/processed/${requestId}.folded`, requestId);
           } else {
             response.statusCode = 500;
             response.end("Error");
