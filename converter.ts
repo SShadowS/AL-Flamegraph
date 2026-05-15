@@ -9,6 +9,7 @@ import validator from 'validator';
 import { getBoolean } from './src/lib/booleans';
 import { CreateColorOption } from './src/lib/color';
 import { convertDateTimeToUnixTimestamp } from './src/lib/dates';
+import { ProcessData, setRandomUUID, state as profileState } from './src/lib/profile';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -18,103 +19,20 @@ Pyroscope.init({
 Pyroscope.start()
 
 const port = 5000;
-let processed: number[] = [];
-let callStack: string;
-let input: any;
-let output: string;
-let CSVoutput: string;
 let debug: boolean = true || getBoolean(process.env.DEBUG);
-let randomUUID: string = "";
 
-/**
- * The function takes a call stack element and adds it to the output string
- * @param {any} element - any - This is the element that is passed to the function.
- */
-function AddLine(element: any) {
-  let line: string = "";
-  if (callStack != "") {
-    line = `${callStack};${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
-  } else {
-    line = `${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
-  }
-  callStack = line;
-  output += `${line} ${element.hitCount}\n`;
-}
 
-/**
- * > ProcessElement takes an element, adds it to the processed list, adds a line to the output, and
- * then processes each of its children
- * @param {any} element - the element to process
- * @param {string} filter - the name of the extension to filter the output by.
- */
-function ProcessElement(element: any, filter: string) {
-  processed.push(element.id);
-  if (filter) {
-    if ((element.callFrame.functionName == 'IdleTime') || (element.declaringApplication.appName !== filter)) {
-      AddLine(element);
-    }
-  } else {
-    AddLine(element);
-  }
-  var currentCallStack: string = callStack;
-  if (element.children.length > 0) {
-    element.children.forEach(element => {
-      var child = input.nodes.find(child => child.id == element);
-      ProcessElement(child, filter);
-      callStack = currentCallStack;
-    });
-  };
-}
 
-/**
- * It takes the data from the JSON file, and processes it into a folded file. 
- * 
- * The folded file is then converted into a SVG file. 
- * 
- * The SVG file is then returned.
- * @param {any} data - the data object that you get from the JSON file
- * @param {boolean} onlyFolded - If true, the output will be a folded file. If false, the output will
- * be a SVG file.
- * @param {string} title - The title of the flamechart
- * @param {string} subtitle - The subtitle of the flamechart.
- * @param {string} colorHeader - The colorscheme of the flamechart.
- * @param {number} width - The width of the SVG in pixels.
- * @param {boolean} flamechart - boolean - if true, the output will be a flamechart, if false, it will
- * be a standard flamegraph
- * @param {string} filter - The name of the extension to filter the output by.
- * @returns a promise.
- */
-async function ProcessData(data: any, onlyFolded: boolean, title: string, subtitle: string, colorHeader: string, width: number, flamechart: boolean, filter: string): Promise<string> {
-  output = "";
-  processed = [];
-  callStack = "";
-  CSVoutput = "";
-  data.nodes.forEach(element => {
-    if (!processed.includes(element.id)) {
-      callStack = "";
-      processed.push(element.id);
-      ProcessElement(element, filter);
-    }
-  });
-
-  let foldedfile: string = `./log/processed/${randomUUID}.folded`;
-  WriteOutputToFile(foldedfile);
-  if (onlyFolded) {
-    return output;
-  } else {
-    return await ConvertFoldedToSVGasync(foldedfile, title, subtitle, colorHeader, width, flamechart);
-  }
-};
 
 import { Router } from 'express';
 
 const router = Router();
 router.post('/upload', async (request: express.Request, response: express.Response) => {
-  randomUUID = uuidv4();
+  setRandomUUID(uuidv4());
 
   /* Logging the IP address of the client that is calling the API. */
   if (debug) {
-    console.log(`POST called by ${request.connection.remoteAddress} - ${randomUUID}`);
+    console.log(`POST called by ${request.connection.remoteAddress} - ${profileState.randomUUID}`);
   }
 
   /* Getting the headers from the request, and converting them to the correct type. */
@@ -143,15 +61,15 @@ router.post('/upload', async (request: express.Request, response: express.Respon
       /* Writing the input to a file. */
       if (debug) {
         console.log(`Writing input to file.`);
-        fs.writeFileSync(`./log/input/${randomUUID}.json`, result);
+        fs.writeFileSync(`./log/input/${profileState.randomUUID}.json`, result);
       }
 
-      input = JSON.parse(result);
+      const input = JSON.parse(result);
 
       /* Calling the ProcessData function, and then it is checking the result. If the result is not empty, it
       will set the header to either text/plain or image/svg+xml, and then it will return the result. If
       the result is empty, it will return a 500 error. */
-        ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter).then(finalresult => {
+        ProcessData(input, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, ConvertFoldedToSVGasync).then(finalresult => {
           if (finalresult.length > 0) {
             if (stripFileHeader && !onlyFolded) {
               finalresult = finalresult.replace(/(?:.*\n){2}/, '');
@@ -160,9 +78,9 @@ router.post('/upload', async (request: express.Request, response: express.Respon
             if (debug) {
               console.log(`Writing output to file.`);
               if (onlyFolded) {
-                fs.writeFileSync(`./log/output/${randomUUID}.folded`, finalresult);
+                fs.writeFileSync(`./log/output/${profileState.randomUUID}.folded`, finalresult);
               } else {
-                fs.writeFileSync(`./log/output/${randomUUID}.svg`, result);
+                fs.writeFileSync(`./log/output/${profileState.randomUUID}.svg`, result);
               }
             }
 
@@ -181,8 +99,8 @@ router.post('/upload', async (request: express.Request, response: express.Respon
 
             response.statusCode = 200;
             response.end(finalresult);
-            fs.rm(`./log/processed/${randomUUID}.folded`, (exception) => (
-              console.log(`Cleanup from session ${randomUUID}`)
+            fs.rm(`./log/processed/${profileState.randomUUID}.folded`, (exception) => (
+              console.log(`Cleanup from session ${profileState.randomUUID}`)
             ));
           } else {
             response.statusCode = 500;
@@ -264,8 +182,7 @@ async function ConvertFoldedToSVGasync(foldedfile: string, title: string, subtit
 
     /* Running the script. */
     const { stdout, stderr } = await execPromise(command);
-    CSVoutput = stdout;
-    return CSVoutput;
+    return stdout;
   } catch (error) {
     console.log(error);
   }
@@ -279,6 +196,6 @@ async function ConvertFoldedToSVGasync(foldedfile: string, title: string, subtit
  */
 function WriteOutputToFile(foldedfile: string) {
   // TODO: Sanitize the output with replace all and don't write the file.
-  fs.writeFileSync(foldedfile, output);
+  fs.writeFileSync(foldedfile, profileState.output);
 }
 
