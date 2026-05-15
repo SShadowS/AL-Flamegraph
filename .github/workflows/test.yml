@@ -21,8 +21,6 @@ jobs:
       - name: Verify Perl available
         run: perl --version
       - run: npm ci
-        env:
-          npm_config_ignore_scripts: 'true'
       - run: npm run test:cov
         env:
           DEBUG: 'false'

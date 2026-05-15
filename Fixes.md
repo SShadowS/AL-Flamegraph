@@ -83,6 +83,7 @@ Deeply nested call profiles blow the JS stack.
 **Location:** `converter.ts:12`
 `serverAddress: 'http://192.168.2.77:4040'` — private LAN address baked in.
 **Fix:** Move to env var; default to disabled.
+**Resolved:** Pyroscope removed entirely.
 
 ### 14. Hardcoded absolute paths in npm scripts
 **Location:** `package.json:16-17`

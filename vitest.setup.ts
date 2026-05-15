@@ -1,10 +1,3 @@
-import { vi } from 'vitest';
-
-vi.mock('@pyroscope/nodejs', () => ({
-  default: {
-    init: vi.fn(),
-    start: vi.fn(),
-  },
-  init: vi.fn(),
-  start: vi.fn(),
-}));
+// vitest setup — intentionally empty after Pyroscope removal.
+// Add global test mocks/fixtures here as needed.
+export {};
