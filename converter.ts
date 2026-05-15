@@ -7,6 +7,7 @@ import { getBoolean } from './src/lib/booleans';
 import { convertDateTimeToUnixTimestamp } from './src/lib/dates';
 import { ProcessData, setRandomUUID, state as profileState } from './src/lib/profile';
 import { convertFoldedToSVG as ConvertFoldedToSVGasync } from './src/lib/flamegraph';
+import { cleanupFolded } from './src/lib/fs-helpers';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -96,9 +97,7 @@ router.post('/upload', async (request: express.Request, response: express.Respon
 
             response.statusCode = 200;
             response.end(finalresult);
-            fs.rm(`./log/processed/${profileState.randomUUID}.folded`, (exception) => (
-              console.log(`Cleanup from session ${profileState.randomUUID}`)
-            ));
+            cleanupFolded(`./log/processed/${profileState.randomUUID}.folded`, profileState.randomUUID);
           } else {
             response.statusCode = 500;
             response.end("Error");
@@ -139,14 +138,4 @@ app.listen(port, () => {
 });
 
 
-/**
- * This function takes a string as an argument and writes the contents of the output variable to a file
- * with the name of the string.
- * This is to prevent command injection, which currently is possible if parsed via piping to flamegraph.pl
- * @param {string} foldedfile - The name of the file to write the output to.
- */
-function WriteOutputToFile(foldedfile: string) {
-  // TODO: Sanitize the output with replace all and don't write the file.
-  fs.writeFileSync(foldedfile, profileState.output);
-}
 
