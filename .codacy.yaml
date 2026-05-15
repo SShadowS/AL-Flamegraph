@@ -1,0 +1,21 @@
+---
+# Codacy configuration.
+# Style is enforced locally and in CI by Biome (see biome.json). Disable
+# Codacy's bundled style tools so the two don't argue over single vs.
+# double quotes and line wrapping.
+engines:
+  eslint:
+    enabled: false
+  prettier:
+    enabled: false
+  stylelint:
+    enabled: false
+  biome:
+    enabled: true
+exclude_paths:
+  - 'out/**'
+  - 'coverage/**'
+  - 'node_modules/**'
+  - 'docs/**'
+  - 'test/fixtures/**'
+  - 'flamegraph.pl'

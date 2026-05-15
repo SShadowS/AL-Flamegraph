@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { scopedLogPath } from './fs-helpers';
 
 interface ProfileState {
   processed: Set<number>;
@@ -67,7 +68,7 @@ export async function ProcessData(
     }
   });
 
-  const foldedfile: string = `./log/processed/${randomUUID}.folded`;
+  const foldedfile: string = scopedLogPath('processed', randomUUID, 'folded');
   fs.writeFileSync(foldedfile, state.output);
   try {
     if (onlyFolded) {

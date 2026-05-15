@@ -21,11 +21,13 @@ beforeEach(() => {
   fs.mkdirSync('./log/processed', { recursive: true });
 });
 
+const idOf = (name: string) => name.replace('.alcpuprofile', '');
+
 describe('ProcessData against real fixtures (safe set)', () => {
   for (const name of SAFE_FIXTURES) {
     it(`produces non-empty folded output for ${name}`, async () => {
       const data = JSON.parse(loadRealRaw(name));
-      const result = await ProcessData(data, `real-${name}`, true, '', '', '', 0, false, '', noopFlame);
+      const result = await ProcessData(data, `real-${idOf(name)}`, true, '', '', '', 0, false, '', noopFlame);
       const lines = result.output.split('\n').filter(Boolean);
       expect(lines.length).toBeGreaterThan(0);
       for (const line of lines) {
@@ -36,9 +38,9 @@ describe('ProcessData against real fixtures (safe set)', () => {
 
     it(`cleans up folded file from ./log/processed after processing for ${name}`, async () => {
       const data = JSON.parse(loadRealRaw(name));
-      await ProcessData(data, `real-write-${name}`, true, '', '', '', 0, false, '', noopFlame);
-      const path = `./log/processed/real-write-${name}.folded`;
-      expect(fs.existsSync(path)).toBe(false);
+      const id = `real-write-${idOf(name)}`;
+      await ProcessData(data, id, true, '', '', '', 0, false, '', noopFlame);
+      expect(fs.existsSync(`./log/processed/${id}.folded`)).toBe(false);
     });
   }
 });
@@ -47,7 +49,7 @@ describe('ProcessData against real fixtures (formerly crashing — Fixes.md #38 
   for (const name of CRASHING_FIXTURES) {
     it(`Fixes.md #38 fixed: ${name} processes without TypeError on missing objectType`, async () => {
       const data = JSON.parse(loadRealRaw(name));
-      const result = await ProcessData(data, `real-${name}`, true, '', '', '', 0, false, '', noopFlame);
+      const result = await ProcessData(data, `real-${idOf(name)}`, true, '', '', '', 0, false, '', noopFlame);
       // If we reach here, the bug is fixed.
       expect(result.output.length).toBeGreaterThan(0);
     });

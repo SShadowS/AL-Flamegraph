@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getBoolean } from './lib/booleans';
 import { convertDateTimeToUnixTimestamp } from './lib/dates';
 import { convertFoldedToSVG } from './lib/flamegraph';
+import { scopedLogPath } from './lib/fs-helpers';
 import { ProcessData } from './lib/profile';
 
 export interface AppDeps {
@@ -49,7 +50,7 @@ export function createApp(deps: AppDeps = {}): express.Express {
 
       if (debug) {
         console.log(`Writing input to file.`);
-        fs.writeFileSync(`./log/input/${requestId}.json`, result);
+        fs.writeFileSync(scopedLogPath('input', requestId, 'json'), result);
       }
       let input: any;
       try {
@@ -70,9 +71,9 @@ export function createApp(deps: AppDeps = {}): express.Express {
             if (debug) {
               console.log(`Writing output to file.`);
               if (onlyFolded) {
-                fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
+                fs.writeFileSync(scopedLogPath('output', requestId, 'folded'), finalresult);
               } else {
-                fs.writeFileSync(`./log/output/${requestId}.svg`, finalresult);
+                fs.writeFileSync(scopedLogPath('output', requestId, 'svg'), finalresult);
               }
             }
             if (onlyFolded) {
