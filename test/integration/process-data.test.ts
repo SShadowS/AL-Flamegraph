@@ -1,14 +1,12 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { ProcessData } from '../../src/lib/profile';
 import { loadRealRaw } from '../helpers/fixtures';
 
 const noopFlame = async () => '<svg/>';
 
 // Fixtures that survive the current AddLine bug (objectType always present).
-const SAFE_FIXTURES = [
-  'session-2738d76b.alcpuprofile',
-];
+const SAFE_FIXTURES = ['session-2738d76b.alcpuprofile'];
 
 // Fixtures with at least one node missing `applicationDefinition.objectType`.
 // These crash AddLine today — pinned by Fixes.md #38.
@@ -27,7 +25,7 @@ describe('ProcessData against real fixtures (safe set)', () => {
   for (const name of SAFE_FIXTURES) {
     it(`produces non-empty folded output for ${name}`, async () => {
       const data = JSON.parse(loadRealRaw(name));
-      const result = await ProcessData(data, 'real-' + name, true, '', '', '', 0, false, '', noopFlame);
+      const result = await ProcessData(data, `real-${name}`, true, '', '', '', 0, false, '', noopFlame);
       const lines = result.output.split('\n').filter(Boolean);
       expect(lines.length).toBeGreaterThan(0);
       for (const line of lines) {
@@ -38,7 +36,7 @@ describe('ProcessData against real fixtures (safe set)', () => {
 
     it(`cleans up folded file from ./log/processed after processing for ${name}`, async () => {
       const data = JSON.parse(loadRealRaw(name));
-      await ProcessData(data, 'real-write-' + name, true, '', '', '', 0, false, '', noopFlame);
+      await ProcessData(data, `real-write-${name}`, true, '', '', '', 0, false, '', noopFlame);
       const path = `./log/processed/real-write-${name}.folded`;
       expect(fs.existsSync(path)).toBe(false);
     });
@@ -49,7 +47,7 @@ describe('ProcessData against real fixtures (formerly crashing — Fixes.md #38 
   for (const name of CRASHING_FIXTURES) {
     it(`Fixes.md #38 fixed: ${name} processes without TypeError on missing objectType`, async () => {
       const data = JSON.parse(loadRealRaw(name));
-      const result = await ProcessData(data, 'real-' + name, true, '', '', '', 0, false, '', noopFlame);
+      const result = await ProcessData(data, `real-${name}`, true, '', '', '', 0, false, '', noopFlame);
       // If we reach here, the bug is fixed.
       expect(result.output.length).toBeGreaterThan(0);
     });

@@ -1,11 +1,16 @@
-import { describe, it, expect } from 'vitest';
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 import request from 'supertest';
-import { makeTestApp } from '../helpers/test-app';
+import { describe, expect, it } from 'vitest';
 import { loadRealRaw } from '../helpers/fixtures';
+import { makeTestApp } from '../helpers/test-app';
 
 function hasPerl(): boolean {
-  try { execSync('perl --version', { stdio: 'ignore' }); return true; } catch { return false; }
+  try {
+    execSync('perl --version', { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const d = !hasPerl() ? describe.skip : describe;
@@ -47,7 +52,7 @@ d('POST /upload headers round-trip', () => {
     // The aqua palette uses teal tones (equal green and blue components).
     // With the fallthrough bug the SVG would use aqua colours instead.
     // Verify warm colours are present: at least one fill with red >= 200 and blue < 100.
-    expect(r.body.toString()).toMatch(/fill="rgb\(2\d\d,\d+,\d{1,2}\)"/)
+    expect(r.body.toString()).toMatch(/fill="rgb\(2\d\d,\d+,\d{1,2}\)"/);
   });
 
   it('flamechart=true produces flamechart', async () => {

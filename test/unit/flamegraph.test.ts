@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const execFileMock = vi.fn();
 vi.mock('child_process', () => ({
@@ -8,7 +8,7 @@ vi.mock('child_process', () => ({
 
 beforeEach(() => {
   execFileMock.mockReset();
-  execFileMock.mockImplementation((cmd: string, args: string[], cb: any) =>
+  execFileMock.mockImplementation((_cmd: string, _args: string[], cb: any) =>
     cb(null, { stdout: '<svg/>', stderr: '' }),
   );
 });
@@ -61,7 +61,7 @@ describe('convertFoldedToSVG', () => {
   });
 
   it('Fixes.md #8 fixed: rejects when exec errors', async () => {
-    execFileMock.mockImplementationOnce((cmd: string, args: string[], cb: any) =>
+    execFileMock.mockImplementationOnce((_cmd: string, _args: string[], cb: any) =>
       cb(new Error('perl missing'), { stdout: '', stderr: '' }),
     );
     await expect(convertFoldedToSVG('a.folded', '', '', '', 0, false)).rejects.toThrow('perl missing');

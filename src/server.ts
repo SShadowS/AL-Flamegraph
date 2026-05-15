@@ -1,10 +1,10 @@
+import * as fs from 'node:fs';
 import express, { Router } from 'express';
-import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { getBoolean } from './lib/booleans';
 import { convertDateTimeToUnixTimestamp } from './lib/dates';
-import { ProcessData } from './lib/profile';
 import { convertFoldedToSVG } from './lib/flamegraph';
+import { ProcessData } from './lib/profile';
 
 export interface AppDeps {
   debug?: boolean;
@@ -17,92 +17,98 @@ export function createApp(deps: AppDeps = {}): express.Express {
   const flamegraph = deps.flamegraph ?? convertFoldedToSVG;
   const router = Router();
 
-  router.post('/upload', express.raw({ type: '*/*', limit: '50mb' }), async (request: express.Request, response: express.Response) => {
-    const requestId = uuidv4();
+  router.post(
+    '/upload',
+    express.raw({ type: '*/*', limit: '50mb' }),
+    async (request: express.Request, response: express.Response) => {
+      const requestId = uuidv4();
 
-    if (debug) {
-      console.log(`POST called by ${request.connection.remoteAddress} - ${requestId}`);
-    }
+      if (debug) {
+        console.log(`POST called by ${request.connection.remoteAddress} - ${requestId}`);
+      }
 
-    const headers = request.headers;
-    const stripFileHeader: boolean = getBoolean(headers['stripfileheader']);
-    const colorHeader: string = headers['color'] as string;
-    const onlyFolded: boolean = getBoolean(headers['onlyfolded']);
-    const flamechart: boolean = getBoolean(headers['flamechart']);
-    const title: string = headers['title'] as string;
-    const subtitle: string = headers['subtitle'] as string;
-    const width: number = +(headers['width'] as any);
-    const fromunix: string = headers['fromunix'] as string;
-    const tounix: string = headers['tounix'] as string;
-    const filter: string = headers['filter'] as string;
+      const headers = request.headers;
+      const stripFileHeader: boolean = getBoolean(headers.stripfileheader);
+      const colorHeader: string = headers.color as string;
+      const onlyFolded: boolean = getBoolean(headers.onlyfolded);
+      const flamechart: boolean = getBoolean(headers.flamechart);
+      const title: string = headers.title as string;
+      const subtitle: string = headers.subtitle as string;
+      const width: number = +(headers.width as any);
+      const fromunix: string = headers.fromunix as string;
+      const tounix: string = headers.tounix as string;
+      const filter: string = headers.filter as string;
 
-    const body = request.body as Buffer;
-    const result = body ? body.toString() : '';
-    if (result.length === 0) {
-      response.statusCode = 500;
-      response.end();
-      return;
-    }
+      const body = request.body as Buffer;
+      const result = body ? body.toString() : '';
+      if (result.length === 0) {
+        response.statusCode = 500;
+        response.end();
+        return;
+      }
 
-    if (debug) {
-      console.log(`Writing input to file.`);
-      fs.writeFileSync(`./log/input/${requestId}.json`, result);
-    }
-    let input: any;
-    try {
-      input = JSON.parse(result);
-    } catch {
-      response.statusCode = 400;
-      response.end("Invalid JSON");
-      return;
-    }
+      if (debug) {
+        console.log(`Writing input to file.`);
+        fs.writeFileSync(`./log/input/${requestId}.json`, result);
+      }
+      let input: any;
+      try {
+        input = JSON.parse(result);
+      } catch {
+        response.statusCode = 400;
+        response.end('Invalid JSON');
+        return;
+      }
 
-    ProcessData(input, requestId, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph).then((result_data) => {
-      let finalresult = result_data.output;
-      if (finalresult && finalresult.length > 0) {
-        if (stripFileHeader && !onlyFolded) {
-          finalresult = finalresult.replace(/(?:.*\n){2}/, '');
-        }
-        if (debug) {
-          console.log(`Writing output to file.`);
-          if (onlyFolded) {
-            fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
+      ProcessData(input, requestId, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph)
+        .then((result_data) => {
+          let finalresult = result_data.output;
+          if (finalresult && finalresult.length > 0) {
+            if (stripFileHeader && !onlyFolded) {
+              finalresult = finalresult.replace(/(?:.*\n){2}/, '');
+            }
+            if (debug) {
+              console.log(`Writing output to file.`);
+              if (onlyFolded) {
+                fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
+              } else {
+                fs.writeFileSync(`./log/output/${requestId}.svg`, finalresult);
+              }
+            }
+            if (onlyFolded) {
+              response.setHeader('Content-Type', 'text/plain');
+            } else {
+              response.setHeader('Content-Type', 'image/svg+xml');
+            }
+            if (fromunix) {
+              response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix).toString());
+            }
+            if (tounix) {
+              response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix).toString());
+            }
+            response.statusCode = 200;
+            response.end(finalresult);
           } else {
-            fs.writeFileSync(`./log/output/${requestId}.svg`, finalresult);
+            response.statusCode = 500;
+            response.end('Error');
           }
-        }
-        if (onlyFolded) {
-          response.setHeader('Content-Type', 'text/plain');
-        } else {
-          response.setHeader('Content-Type', 'image/svg+xml');
-        }
-        if (fromunix) {
-          response.setHeader('FromUnix', convertDateTimeToUnixTimestamp(fromunix).toString());
-        }
-        if (tounix) {
-          response.setHeader('ToUnix', convertDateTimeToUnixTimestamp(tounix).toString());
-        }
-        response.statusCode = 200;
-        response.end(finalresult);
-      } else {
-        response.statusCode = 500;
-        response.end("Error");
-      }
-    }).catch((error) => {
-      console.log(`Error in /upload (${requestId}):`, error);
-      if (!response.headersSent) {
-        response.statusCode = 500;
-        response.end("Error");
-      }
-    });
-  });
+        })
+        .catch((error) => {
+          console.log(`Error in /upload (${requestId}):`, error);
+          if (!response.headersSent) {
+            response.statusCode = 500;
+            response.end('Error');
+          }
+        });
+    },
+  );
 
-  const optionsHandler = (request: express.Request, response: express.Response) => {
+  const optionsHandler = (_request: express.Request, response: express.Response) => {
     response.writeHead(200, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     response.statusCode = 200;
     response.end();
@@ -111,7 +117,7 @@ export function createApp(deps: AppDeps = {}): express.Express {
   router.options('/', optionsHandler);
   router.options('/upload', optionsHandler);
 
-  router.get('/', (request: express.Request, response: express.Response) => {
+  router.get('/', (_request: express.Request, response: express.Response) => {
     response.statusCode = 404;
     response.end();
   });

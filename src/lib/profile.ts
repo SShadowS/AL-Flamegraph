@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 interface ProfileState {
   processed: Set<number>;
@@ -8,9 +8,9 @@ interface ProfileState {
 }
 
 function AddLine(state: ProfileState, element: any): void {
-  let line: string = "";
+  let line: string = '';
   const typeChar = (element.applicationDefinition.objectType ?? '?').substring(0, 1);
-  if (state.callStack !== "") {
+  if (state.callStack !== '') {
     line = `${state.callStack};${typeChar}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   } else {
     line = `${typeChar}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
@@ -33,7 +33,7 @@ function ProcessElement(state: ProfileState, element: any, filter: string): void
   const currentCallStack: string = state.callStack;
   if (element.children.length > 0) {
     element.children.forEach((childId: any) => {
-      const child = state.input.nodes.find((n: any) => n.id == childId);
+      const child = state.input.nodes.find((n: any) => n.id === childId);
       ProcessElement(state, child, filter);
       state.callStack = currentCallStack;
     });
@@ -54,14 +54,14 @@ export async function ProcessData(
 ): Promise<{ folded: string; output: string }> {
   const state: ProfileState = {
     processed: new Set<number>(),
-    callStack: "",
+    callStack: '',
     input: data,
-    output: "",
+    output: '',
   };
 
   data.nodes.forEach((element: any) => {
     if (!state.processed.has(element.id)) {
-      state.callStack = "";
+      state.callStack = '';
       state.processed.add(element.id);
       ProcessElement(state, element, filter);
     }

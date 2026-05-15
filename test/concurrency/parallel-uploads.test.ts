@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
-import { makeTestApp } from '../helpers/test-app';
+import { describe, expect, it, vi } from 'vitest';
 import { loadRealRaw } from '../helpers/fixtures';
+import { makeTestApp } from '../helpers/test-app';
 
 // session-2738d76b is the only real fixture that doesn't crash AddLine (Fixes.md #38).
 const SAFE_FIXTURE = 'session-2738d76b.alcpuprofile';
@@ -16,14 +16,16 @@ const SAFE_FIXTURE = 'session-2738d76b.alcpuprofile';
 // server.ts reads it for cleanupFolded().
 // ---------------------------------------------------------------------------
 function makeDeferredMockFlamegraph() {
-  const mock = vi.fn(async (_folded: string, title: string, _subtitle: string, _color: string, width: number, _flamechart: boolean) => {
-    // Yield N ticks so ALL parallel requests have time to call setRandomUUID()
-    // and overwrite state.randomUUID before any .then() callback runs.
-    for (let i = 0; i < 5; i++) {
-      await new Promise<void>(resolve => setImmediate(resolve));
-    }
-    return `<?xml version="1.0"?>\n<!DOCTYPE svg>\n<svg title="${title}" width="${width}"><text>mock-svg</text></svg>`;
-  });
+  const mock = vi.fn(
+    async (_folded: string, title: string, _subtitle: string, _color: string, width: number, _flamechart: boolean) => {
+      // Yield N ticks so ALL parallel requests have time to call setRandomUUID()
+      // and overwrite state.randomUUID before any .then() callback runs.
+      for (let i = 0; i < 5; i++) {
+        await new Promise<void>((resolve) => setImmediate(resolve));
+      }
+      return `<?xml version="1.0"?>\n<!DOCTYPE svg>\n<svg title="${title}" width="${width}"><text>mock-svg</text></svg>`;
+    },
+  );
   return { mock };
 }
 
@@ -55,8 +57,8 @@ describe('concurrent uploads (Fixes.md #1 — shared state race)', () => {
           .set('Content-Type', 'application/octet-stream')
           .set('title', `Title-${i}`)
           .buffer(true)
-          .send(body)
-      )
+          .send(body),
+      ),
     );
 
     responses.forEach((r, i) => {
@@ -80,20 +82,50 @@ describe('concurrent uploads (Fixes.md #1 — shared state race)', () => {
     const body = loadRealRaw(SAFE_FIXTURE);
     const data = JSON.parse(body);
     const filters = [
-      '', 'Base Application', 'Microsoft', 'Custom Ext', 'X',
-      '', 'Base Application', 'Microsoft', 'Custom Ext', 'X',
+      '',
+      'Base Application',
+      'Microsoft',
+      'Custom Ext',
+      'X',
+      '',
+      'Base Application',
+      'Microsoft',
+      'Custom Ext',
+      'X',
     ];
 
     // Compute serial baselines first.
     const expected: string[] = [];
     for (let i = 0; i < filters.length; i++) {
-      const r = await ProcessData(JSON.parse(JSON.stringify(data)), `serial-${i}`, true, '', '', '', 0, false, filters[i], async () => '');
+      const r = await ProcessData(
+        JSON.parse(JSON.stringify(data)),
+        `serial-${i}`,
+        true,
+        '',
+        '',
+        '',
+        0,
+        false,
+        filters[i],
+        async () => '',
+      );
       expected.push(r.output);
     }
 
     // Parallel run: all 10 promises started at once.
     const promises = filters.map((filter, i) =>
-      ProcessData(JSON.parse(JSON.stringify(data)), `parallel-${i}`, true, '', '', '', 0, false, filter, async () => '')
+      ProcessData(
+        JSON.parse(JSON.stringify(data)),
+        `parallel-${i}`,
+        true,
+        '',
+        '',
+        '',
+        0,
+        false,
+        filter,
+        async () => '',
+      ),
     );
     const results = await Promise.all(promises);
 

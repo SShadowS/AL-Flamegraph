@@ -1,5 +1,5 @@
-import * as util from 'util';
-import { execFile } from 'child_process';
+import { execFile } from 'node:child_process';
+import * as util from 'node:util';
 import { CreateColorOption } from './color';
 
 const execFilePromise = util.promisify(execFile);

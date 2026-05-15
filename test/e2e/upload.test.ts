@@ -1,12 +1,17 @@
-import { describe, it, expect } from 'vitest';
-import * as fs from 'fs';
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
 import request from 'supertest';
-import { makeTestApp } from '../helpers/test-app';
+import { describe, expect, it } from 'vitest';
 import { loadRealRaw, loadSyntheticRaw } from '../helpers/fixtures';
+import { makeTestApp } from '../helpers/test-app';
 
 function hasPerl(): boolean {
-  try { execSync('perl --version', { stdio: 'ignore' }); return true; } catch { return false; }
+  try {
+    execSync('perl --version', { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const skipNoPerl = !hasPerl();
@@ -70,7 +75,7 @@ d('POST /upload (real flamegraph.pl)', () => {
       .set('fromunix', '2024-01-01T00:00:00Z')
       .send(body);
     expect(r.status).toBe(200);
-    expect(r.headers['fromunix']).toBeDefined();
+    expect(r.headers.fromunix).toBeDefined();
   });
 
   it('Fixes.md #6 fixed: returns 400 on malformed JSON', async () => {
@@ -83,11 +88,8 @@ d('POST /upload (real flamegraph.pl)', () => {
 
   it('Fixes.md #9 fixed: rejects request body above 50MB', async () => {
     // Body is ~100MB, exceeds the 50MB limit configured via express.raw.
-    const huge = '{"nodes":[' + '0,'.repeat(50 * 1024 * 1024) + 'null]}';
-    const r = await request(app)
-      .post('/upload')
-      .set('Content-Type', 'application/octet-stream')
-      .send(huge);
+    const huge = `{"nodes":[${'0,'.repeat(50 * 1024 * 1024)}null]}`;
+    const r = await request(app).post('/upload').set('Content-Type', 'application/octet-stream').send(huge);
     expect(r.status).toBe(413);
   }, 60000);
 
@@ -96,12 +98,8 @@ d('POST /upload (real flamegraph.pl)', () => {
     fs.mkdirSync('./log/output', { recursive: true });
     const before = new Set(fs.readdirSync('./log/output'));
     const body = loadRealRaw(SAFE_FIXTURE);
-    await request(debugApp)
-      .post('/upload')
-      .set('Content-Type', 'application/octet-stream')
-      .buffer(true)
-      .send(body);
-    const after = fs.readdirSync('./log/output').filter(f => !before.has(f) && f.endsWith('.svg'));
+    await request(debugApp).post('/upload').set('Content-Type', 'application/octet-stream').buffer(true).send(body);
+    const after = fs.readdirSync('./log/output').filter((f) => !before.has(f) && f.endsWith('.svg'));
     expect(after.length).toBe(1);
     const contents = fs.readFileSync(`./log/output/${after[0]}`, 'utf8');
     expect(contents).toContain('<svg');

@@ -1,49 +1,58 @@
 {
-    "devDependencies": {
-        "@types/express": "^5.0.6",
-        "@types/node": "^25.8.0",
-        "@types/supertest": "^7.2.0",
-        "@vitest/coverage-v8": "^4.1.6",
-        "nodemon": "^3.1.14",
-        "supertest": "^7.2.2",
-        "ts-node": "^10.9.2",
-        "typescript": "^6.0.3",
-        "vitest": "^4.1.6"
-    },
-    "name": "al-flamegraph",
-    "version": "1.0.0",
-    "description": "Creates SVG Flamegraphs from .alcpuprofile files",
-    "main": "out/src/index.js",
-    "scripts": {
-        "test": "vitest run",
-        "test:cov": "vitest run --coverage",
-        "test:unit": "vitest run --project unit",
-        "test:int": "vitest run --project integration",
-        "test:e2e": "vitest run --project e2e",
-        "dev": "nodemon",
-        "start": "ts-node src/index.ts",
-        "build": "tsc -p tsconfig.json",
-        "fixtures:regen": "ts-node scripts/regen-fixtures.ts"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/SShadowS/AL-Flamegraph.git"
-    },
-    "keywords": [
-        "AL",
-        "flamegraph"
-    ],
-    "author": "SShadowS",
-    "license": "GPL-3.0",
-    "bugs": {
-        "url": "https://github.com/SShadowS/AL-Flamegraph/issues"
-    },
-    "homepage": "https://github.com/SShadowS/AL-Flamegraph#readme",
-    "dependencies": {
-        "@types/uuid": "^11.0.0",
-        "@types/validator": "^13.15.10",
-        "express": "^5.2.1",
-        "uuid": "^14.0.0",
-        "validator": "^13.15.35"
-    }
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.8.0",
+    "@types/supertest": "^7.2.0",
+    "@vitest/coverage-v8": "^4.1.6",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6"
+  },
+  "name": "al-flamegraph",
+  "version": "1.0.0",
+  "description": "Creates SVG Flamegraphs from .alcpuprofile files",
+  "main": "out/src/index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "test:unit": "vitest run --project unit",
+    "test:int": "vitest run --project integration",
+    "test:e2e": "vitest run --project e2e",
+    "typecheck": "tsc --noEmit",
+    "fmt": "biome format --write",
+    "fmt:check": "biome format",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --write",
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "ci": "npm run typecheck && npm run check && npm run test",
+    "dev": "nodemon",
+    "start": "ts-node src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "fixtures:regen": "ts-node scripts/regen-fixtures.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SShadowS/AL-Flamegraph.git"
+  },
+  "keywords": [
+    "AL",
+    "flamegraph"
+  ],
+  "author": "SShadowS",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/SShadowS/AL-Flamegraph/issues"
+  },
+  "homepage": "https://github.com/SShadowS/AL-Flamegraph#readme",
+  "dependencies": {
+    "@types/uuid": "^11.0.0",
+    "@types/validator": "^13.15.10",
+    "express": "^5.2.1",
+    "uuid": "^14.0.0",
+    "validator": "^13.15.35"
+  }
 }

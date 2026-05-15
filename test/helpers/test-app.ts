@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import { createApp, AppDeps } from '../../src/server';
+import * as fs from 'node:fs';
+import { type AppDeps, createApp } from '../../src/server';
 
 export function makeTestApp(deps: AppDeps = {}) {
   fs.mkdirSync('./log/input', { recursive: true });

@@ -1,4 +1,4 @@
-name: test
+name: ci
 
 on:
   push:
@@ -6,12 +6,25 @@ on:
   pull_request:
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run check
+
   test:
     runs-on: ubuntu-latest
+    needs: check
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x, 24.x]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,7 +38,7 @@ jobs:
         env:
           DEBUG: 'false'
       - name: Upload coverage
-        if: matrix.node-version == '20.x'
+        if: matrix.node-version == '22.x'
         uses: actions/upload-artifact@v4
         with:
           name: coverage
