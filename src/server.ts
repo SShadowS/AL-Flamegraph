@@ -97,7 +97,7 @@ export function createApp(deps: AppDeps = {}): express.Express {
     });
   });
 
-  router.options('/', (request: express.Request, response: express.Response) => {
+  const optionsHandler = (request: express.Request, response: express.Response) => {
     response.writeHead(200, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
@@ -106,7 +106,10 @@ export function createApp(deps: AppDeps = {}): express.Express {
     });
     response.statusCode = 200;
     response.end();
-  });
+  };
+
+  router.options('/', optionsHandler);
+  router.options('/upload', optionsHandler);
 
   router.get('/', (request: express.Request, response: express.Response) => {
     response.statusCode = 404;

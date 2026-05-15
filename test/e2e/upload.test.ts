@@ -107,7 +107,7 @@ d('POST /upload (real flamegraph.pl)', () => {
     expect(contents).toContain('<svg');
   });
 
-  it.fails('Fixes.md #33: OPTIONS /upload returns 200 with CORS headers', async () => {
+  it('Fixes.md #33 fixed: OPTIONS /upload returns 200 with CORS headers', async () => {
     const r = await request(app).options('/upload');
     expect(r.status).toBe(200);
     expect(r.headers['access-control-allow-methods']).toContain('POST');
