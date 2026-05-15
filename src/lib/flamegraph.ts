@@ -1,9 +1,8 @@
-import { exec } from 'child_process';
 import * as util from 'util';
-import validator from 'validator';
+import { execFile } from 'child_process';
 import { CreateColorOption } from './color';
 
-const execPromise = util.promisify(exec);
+const execFilePromise = util.promisify(execFile);
 
 export async function convertFoldedToSVG(
   foldedfile: string,
@@ -13,28 +12,31 @@ export async function convertFoldedToSVG(
   width: number,
   flamechart: boolean,
 ): Promise<string> {
-  let command: string = `perl ./flamegraph.pl ${foldedfile}`;
+  const args: string[] = ['./flamegraph.pl', foldedfile];
 
   if (flamechart) {
-    command += " --flamechart";
+    args.push('--flamechart');
   }
   if (title) {
-    command += ` --title "${validator.stripLow(validator.escape(title))}"`;
+    args.push('--title', title);
   }
   if (subtitle) {
-    command += ` --subtitle "${validator.stripLow(validator.escape(subtitle))}"`;
+    args.push('--subtitle', subtitle);
   }
   if (width > 0) {
-    command += ` --width ${width}`;
+    args.push('--width', String(width));
   }
   if (colorHeader) {
-    command += ` ${CreateColorOption(colorHeader)}`;
+    const colorOption = CreateColorOption(colorHeader);
+    if (colorOption) {
+      args.push(colorOption);
+    }
   }
 
+  console.log(`Will run: perl ${args.join(' ')}`);
   try {
-    console.log(`Will run: ${command}`);
-    const { stdout } = await execPromise(command);
-    return stdout;
+    const { stdout } = await execFilePromise('perl', args);
+    return stdout as string;
   } catch (error) {
     console.log(error);
     return undefined as any;
