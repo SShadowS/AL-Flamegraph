@@ -91,7 +91,7 @@ d('POST /upload (real flamegraph.pl)', () => {
     expect(r.status).toBe(413);
   }, 60000);
 
-  it.fails('Fixes.md #4: SVG logged to ./log/output/<uuid>.svg contains SVG, not raw JSON', async () => {
+  it('Fixes.md #4 fixed: SVG logged to ./log/output/<uuid>.svg contains SVG', async () => {
     const debugApp = makeTestApp({ debug: true });
     fs.mkdirSync('./log/output', { recursive: true });
     const before = new Set(fs.readdirSync('./log/output'));

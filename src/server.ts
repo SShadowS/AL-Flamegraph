@@ -62,7 +62,7 @@ export function createApp(deps: AppDeps = {}): express.Express {
           if (onlyFolded) {
             fs.writeFileSync(`./log/output/${requestId}.folded`, finalresult);
           } else {
-            fs.writeFileSync(`./log/output/${requestId}.svg`, result);
+            fs.writeFileSync(`./log/output/${requestId}.svg`, finalresult);
           }
         }
         if (onlyFolded) {
