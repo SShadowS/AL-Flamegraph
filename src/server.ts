@@ -5,7 +5,6 @@ import { getBoolean } from './lib/booleans';
 import { convertDateTimeToUnixTimestamp } from './lib/dates';
 import { ProcessData } from './lib/profile';
 import { convertFoldedToSVG } from './lib/flamegraph';
-import { cleanupFolded } from './lib/fs-helpers';
 
 export interface AppDeps {
   debug?: boolean;
@@ -85,7 +84,6 @@ export function createApp(deps: AppDeps = {}): express.Express {
         }
         response.statusCode = 200;
         response.end(finalresult);
-        cleanupFolded(`./log/processed/${requestId}.folded`, requestId);
       } else {
         response.statusCode = 500;
         response.end("Error");

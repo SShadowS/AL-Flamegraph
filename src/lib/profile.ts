@@ -68,10 +68,18 @@ export async function ProcessData(
 
   const foldedfile: string = `./log/processed/${randomUUID}.folded`;
   fs.writeFileSync(foldedfile, state.output);
-  if (onlyFolded) {
-    return { folded: foldedfile, output: state.output };
-  } else {
-    const svg = await convertFoldedToSVG(foldedfile, title, subtitle, colorHeader, width, flamechart);
-    return { folded: foldedfile, output: svg };
+  try {
+    if (onlyFolded) {
+      return { folded: foldedfile, output: state.output };
+    } else {
+      const svg = await convertFoldedToSVG(foldedfile, title, subtitle, colorHeader, width, flamechart);
+      return { folded: foldedfile, output: svg };
+    }
+  } finally {
+    try {
+      fs.unlinkSync(foldedfile);
+    } catch {
+      // ignore — file may not exist if write failed
+    }
   }
 }

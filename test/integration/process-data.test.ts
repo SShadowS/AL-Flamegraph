@@ -36,11 +36,11 @@ describe('ProcessData against real fixtures (safe set)', () => {
       }
     });
 
-    it(`writes folded file to ./log/processed for ${name}`, async () => {
+    it(`cleans up folded file from ./log/processed after processing for ${name}`, async () => {
       const data = JSON.parse(loadRealRaw(name));
       await ProcessData(data, 'real-write-' + name, true, '', '', '', 0, false, '', noopFlame);
       const path = `./log/processed/real-write-${name}.folded`;
-      expect(fs.existsSync(path)).toBe(true);
+      expect(fs.existsSync(path)).toBe(false);
     });
   }
 });
@@ -57,10 +57,9 @@ describe('ProcessData against real fixtures (crashing set — Fixes.md #38)', ()
 });
 
 describe('cleanup behavior', () => {
-  it.fails('Fixes.md #20: folded file is cleaned up after onlyFolded=true call', async () => {
+  it('Fixes.md #20 fixed: folded file is cleaned up after onlyFolded=true call', async () => {
     const data = JSON.parse(loadRealRaw('session-2738d76b.alcpuprofile'));
     await ProcessData(data, 'cleanup-test', true, '', '', '', 0, false, '', noopFlame);
-    await new Promise(r => setTimeout(r, 100));
     expect(fs.existsSync('./log/processed/cleanup-test.folded')).toBe(false);
   });
 });
