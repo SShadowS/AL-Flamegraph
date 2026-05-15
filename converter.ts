@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
 import { getBoolean } from './src/lib/booleans';
 import { CreateColorOption } from './src/lib/color';
+import { convertDateTimeToUnixTimestamp } from './src/lib/dates';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -281,12 +282,3 @@ function WriteOutputToFile(foldedfile: string) {
   fs.writeFileSync(foldedfile, output);
 }
 
-
-/**
- * Convert a date/time string to a Unix timestamp.
- * @param value - The date/time string to convert.
- * @returns The number of milliseconds since January 1, 1970, 00:00:00 UTC.
- */
-function convertDateTimeToUnixTimestamp(value) {
-  return Date.parse(value);
-}
