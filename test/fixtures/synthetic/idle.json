@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": { "functionName": "OnRun", "scriptId": "Codeunit_50100", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 5,
+      "children": [2, 3],
+      "declaringApplication": { "appName": "Custom Ext", "appPublisher": "Tester", "appVersion": "1.0.0.0" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "Order Processing", "objectId": 50100 },
+      "frameIdentifier": 100
+    },
+    {
+      "id": 2,
+      "callFrame": { "functionName": "IdleTime", "scriptId": "", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 3,
+      "children": [],
+      "declaringApplication": { "appName": "System", "appPublisher": "Microsoft", "appVersion": "20.0.0.0" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "Idle", "objectId": 0 },
+      "frameIdentifier": 101
+    },
+    {
+      "id": 3,
+      "callFrame": { "functionName": "PostOrder", "scriptId": "Codeunit_50101", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 2,
+      "children": [],
+      "declaringApplication": { "appName": "Custom Ext", "appPublisher": "Tester", "appVersion": "1.0.0.0" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "Order Posting", "objectId": 50101 },
+      "frameIdentifier": 102
+    }
+  ]
+}

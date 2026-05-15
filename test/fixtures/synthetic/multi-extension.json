@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": { "functionName": "BaseFn", "scriptId": "x", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 1,
+      "children": [2],
+      "declaringApplication": { "appName": "Base Application", "appPublisher": "Microsoft", "appVersion": "20" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "Base", "objectId": 1 },
+      "frameIdentifier": 1
+    },
+    {
+      "id": 2,
+      "callFrame": { "functionName": "ExtFn", "scriptId": "x", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 1,
+      "children": [],
+      "declaringApplication": { "appName": "Custom Ext", "appPublisher": "Tester", "appVersion": "1" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "Ext", "objectId": 2 },
+      "frameIdentifier": 2
+    }
+  ]
+}

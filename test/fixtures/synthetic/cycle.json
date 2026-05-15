@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": { "functionName": "A", "scriptId": "x", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 1,
+      "children": [2],
+      "declaringApplication": { "appName": "X", "appPublisher": "Y", "appVersion": "1" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "A", "objectId": 1 },
+      "frameIdentifier": 1
+    },
+    {
+      "id": 2,
+      "callFrame": { "functionName": "B", "scriptId": "x", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 1,
+      "children": [1],
+      "declaringApplication": { "appName": "X", "appPublisher": "Y", "appVersion": "1" },
+      "applicationDefinition": { "objectType": "Codeunit", "objectName": "B", "objectId": 2 },
+      "frameIdentifier": 2
+    }
+  ]
+}

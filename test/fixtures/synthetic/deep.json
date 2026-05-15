@@ -1,0 +1,2502 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "Fn1",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        2
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 1
+      },
+      "frameIdentifier": 1
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "Fn2",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        3
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 2
+      },
+      "frameIdentifier": 2
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "Fn3",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        4
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 3
+      },
+      "frameIdentifier": 3
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "Fn4",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        5
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 4
+      },
+      "frameIdentifier": 4
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "Fn5",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        6
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 5
+      },
+      "frameIdentifier": 5
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "Fn6",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        7
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 6
+      },
+      "frameIdentifier": 6
+    },
+    {
+      "id": 7,
+      "callFrame": {
+        "functionName": "Fn7",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        8
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 7
+      },
+      "frameIdentifier": 7
+    },
+    {
+      "id": 8,
+      "callFrame": {
+        "functionName": "Fn8",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        9
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 8
+      },
+      "frameIdentifier": 8
+    },
+    {
+      "id": 9,
+      "callFrame": {
+        "functionName": "Fn9",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        10
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 9
+      },
+      "frameIdentifier": 9
+    },
+    {
+      "id": 10,
+      "callFrame": {
+        "functionName": "Fn10",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        11
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 10
+      },
+      "frameIdentifier": 10
+    },
+    {
+      "id": 11,
+      "callFrame": {
+        "functionName": "Fn11",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        12
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 11
+      },
+      "frameIdentifier": 11
+    },
+    {
+      "id": 12,
+      "callFrame": {
+        "functionName": "Fn12",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        13
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 12
+      },
+      "frameIdentifier": 12
+    },
+    {
+      "id": 13,
+      "callFrame": {
+        "functionName": "Fn13",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        14
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 13
+      },
+      "frameIdentifier": 13
+    },
+    {
+      "id": 14,
+      "callFrame": {
+        "functionName": "Fn14",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        15
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 14
+      },
+      "frameIdentifier": 14
+    },
+    {
+      "id": 15,
+      "callFrame": {
+        "functionName": "Fn15",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        16
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 15
+      },
+      "frameIdentifier": 15
+    },
+    {
+      "id": 16,
+      "callFrame": {
+        "functionName": "Fn16",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        17
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 16
+      },
+      "frameIdentifier": 16
+    },
+    {
+      "id": 17,
+      "callFrame": {
+        "functionName": "Fn17",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        18
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 17
+      },
+      "frameIdentifier": 17
+    },
+    {
+      "id": 18,
+      "callFrame": {
+        "functionName": "Fn18",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        19
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 18
+      },
+      "frameIdentifier": 18
+    },
+    {
+      "id": 19,
+      "callFrame": {
+        "functionName": "Fn19",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        20
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 19
+      },
+      "frameIdentifier": 19
+    },
+    {
+      "id": 20,
+      "callFrame": {
+        "functionName": "Fn20",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        21
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 20
+      },
+      "frameIdentifier": 20
+    },
+    {
+      "id": 21,
+      "callFrame": {
+        "functionName": "Fn21",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        22
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 21
+      },
+      "frameIdentifier": 21
+    },
+    {
+      "id": 22,
+      "callFrame": {
+        "functionName": "Fn22",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        23
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 22
+      },
+      "frameIdentifier": 22
+    },
+    {
+      "id": 23,
+      "callFrame": {
+        "functionName": "Fn23",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        24
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 23
+      },
+      "frameIdentifier": 23
+    },
+    {
+      "id": 24,
+      "callFrame": {
+        "functionName": "Fn24",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        25
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 24
+      },
+      "frameIdentifier": 24
+    },
+    {
+      "id": 25,
+      "callFrame": {
+        "functionName": "Fn25",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        26
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 25
+      },
+      "frameIdentifier": 25
+    },
+    {
+      "id": 26,
+      "callFrame": {
+        "functionName": "Fn26",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        27
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 26
+      },
+      "frameIdentifier": 26
+    },
+    {
+      "id": 27,
+      "callFrame": {
+        "functionName": "Fn27",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        28
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 27
+      },
+      "frameIdentifier": 27
+    },
+    {
+      "id": 28,
+      "callFrame": {
+        "functionName": "Fn28",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        29
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 28
+      },
+      "frameIdentifier": 28
+    },
+    {
+      "id": 29,
+      "callFrame": {
+        "functionName": "Fn29",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        30
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 29
+      },
+      "frameIdentifier": 29
+    },
+    {
+      "id": 30,
+      "callFrame": {
+        "functionName": "Fn30",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        31
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 30
+      },
+      "frameIdentifier": 30
+    },
+    {
+      "id": 31,
+      "callFrame": {
+        "functionName": "Fn31",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        32
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 31
+      },
+      "frameIdentifier": 31
+    },
+    {
+      "id": 32,
+      "callFrame": {
+        "functionName": "Fn32",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        33
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 32
+      },
+      "frameIdentifier": 32
+    },
+    {
+      "id": 33,
+      "callFrame": {
+        "functionName": "Fn33",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        34
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 33
+      },
+      "frameIdentifier": 33
+    },
+    {
+      "id": 34,
+      "callFrame": {
+        "functionName": "Fn34",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        35
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 34
+      },
+      "frameIdentifier": 34
+    },
+    {
+      "id": 35,
+      "callFrame": {
+        "functionName": "Fn35",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        36
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 35
+      },
+      "frameIdentifier": 35
+    },
+    {
+      "id": 36,
+      "callFrame": {
+        "functionName": "Fn36",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        37
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 36
+      },
+      "frameIdentifier": 36
+    },
+    {
+      "id": 37,
+      "callFrame": {
+        "functionName": "Fn37",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        38
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 37
+      },
+      "frameIdentifier": 37
+    },
+    {
+      "id": 38,
+      "callFrame": {
+        "functionName": "Fn38",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        39
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 38
+      },
+      "frameIdentifier": 38
+    },
+    {
+      "id": 39,
+      "callFrame": {
+        "functionName": "Fn39",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        40
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 39
+      },
+      "frameIdentifier": 39
+    },
+    {
+      "id": 40,
+      "callFrame": {
+        "functionName": "Fn40",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        41
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 40
+      },
+      "frameIdentifier": 40
+    },
+    {
+      "id": 41,
+      "callFrame": {
+        "functionName": "Fn41",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        42
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 41
+      },
+      "frameIdentifier": 41
+    },
+    {
+      "id": 42,
+      "callFrame": {
+        "functionName": "Fn42",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        43
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 42
+      },
+      "frameIdentifier": 42
+    },
+    {
+      "id": 43,
+      "callFrame": {
+        "functionName": "Fn43",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        44
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 43
+      },
+      "frameIdentifier": 43
+    },
+    {
+      "id": 44,
+      "callFrame": {
+        "functionName": "Fn44",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        45
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 44
+      },
+      "frameIdentifier": 44
+    },
+    {
+      "id": 45,
+      "callFrame": {
+        "functionName": "Fn45",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        46
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 45
+      },
+      "frameIdentifier": 45
+    },
+    {
+      "id": 46,
+      "callFrame": {
+        "functionName": "Fn46",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        47
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 46
+      },
+      "frameIdentifier": 46
+    },
+    {
+      "id": 47,
+      "callFrame": {
+        "functionName": "Fn47",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        48
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 47
+      },
+      "frameIdentifier": 47
+    },
+    {
+      "id": 48,
+      "callFrame": {
+        "functionName": "Fn48",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        49
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 48
+      },
+      "frameIdentifier": 48
+    },
+    {
+      "id": 49,
+      "callFrame": {
+        "functionName": "Fn49",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        50
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 49
+      },
+      "frameIdentifier": 49
+    },
+    {
+      "id": 50,
+      "callFrame": {
+        "functionName": "Fn50",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        51
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 50
+      },
+      "frameIdentifier": 50
+    },
+    {
+      "id": 51,
+      "callFrame": {
+        "functionName": "Fn51",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        52
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 51
+      },
+      "frameIdentifier": 51
+    },
+    {
+      "id": 52,
+      "callFrame": {
+        "functionName": "Fn52",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        53
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 52
+      },
+      "frameIdentifier": 52
+    },
+    {
+      "id": 53,
+      "callFrame": {
+        "functionName": "Fn53",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        54
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 53
+      },
+      "frameIdentifier": 53
+    },
+    {
+      "id": 54,
+      "callFrame": {
+        "functionName": "Fn54",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        55
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 54
+      },
+      "frameIdentifier": 54
+    },
+    {
+      "id": 55,
+      "callFrame": {
+        "functionName": "Fn55",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        56
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 55
+      },
+      "frameIdentifier": 55
+    },
+    {
+      "id": 56,
+      "callFrame": {
+        "functionName": "Fn56",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        57
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 56
+      },
+      "frameIdentifier": 56
+    },
+    {
+      "id": 57,
+      "callFrame": {
+        "functionName": "Fn57",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        58
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 57
+      },
+      "frameIdentifier": 57
+    },
+    {
+      "id": 58,
+      "callFrame": {
+        "functionName": "Fn58",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        59
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 58
+      },
+      "frameIdentifier": 58
+    },
+    {
+      "id": 59,
+      "callFrame": {
+        "functionName": "Fn59",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        60
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 59
+      },
+      "frameIdentifier": 59
+    },
+    {
+      "id": 60,
+      "callFrame": {
+        "functionName": "Fn60",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        61
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 60
+      },
+      "frameIdentifier": 60
+    },
+    {
+      "id": 61,
+      "callFrame": {
+        "functionName": "Fn61",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        62
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 61
+      },
+      "frameIdentifier": 61
+    },
+    {
+      "id": 62,
+      "callFrame": {
+        "functionName": "Fn62",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        63
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 62
+      },
+      "frameIdentifier": 62
+    },
+    {
+      "id": 63,
+      "callFrame": {
+        "functionName": "Fn63",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        64
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 63
+      },
+      "frameIdentifier": 63
+    },
+    {
+      "id": 64,
+      "callFrame": {
+        "functionName": "Fn64",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        65
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 64
+      },
+      "frameIdentifier": 64
+    },
+    {
+      "id": 65,
+      "callFrame": {
+        "functionName": "Fn65",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        66
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 65
+      },
+      "frameIdentifier": 65
+    },
+    {
+      "id": 66,
+      "callFrame": {
+        "functionName": "Fn66",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        67
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 66
+      },
+      "frameIdentifier": 66
+    },
+    {
+      "id": 67,
+      "callFrame": {
+        "functionName": "Fn67",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        68
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 67
+      },
+      "frameIdentifier": 67
+    },
+    {
+      "id": 68,
+      "callFrame": {
+        "functionName": "Fn68",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        69
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 68
+      },
+      "frameIdentifier": 68
+    },
+    {
+      "id": 69,
+      "callFrame": {
+        "functionName": "Fn69",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        70
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 69
+      },
+      "frameIdentifier": 69
+    },
+    {
+      "id": 70,
+      "callFrame": {
+        "functionName": "Fn70",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        71
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 70
+      },
+      "frameIdentifier": 70
+    },
+    {
+      "id": 71,
+      "callFrame": {
+        "functionName": "Fn71",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        72
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 71
+      },
+      "frameIdentifier": 71
+    },
+    {
+      "id": 72,
+      "callFrame": {
+        "functionName": "Fn72",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        73
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 72
+      },
+      "frameIdentifier": 72
+    },
+    {
+      "id": 73,
+      "callFrame": {
+        "functionName": "Fn73",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        74
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 73
+      },
+      "frameIdentifier": 73
+    },
+    {
+      "id": 74,
+      "callFrame": {
+        "functionName": "Fn74",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        75
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 74
+      },
+      "frameIdentifier": 74
+    },
+    {
+      "id": 75,
+      "callFrame": {
+        "functionName": "Fn75",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        76
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 75
+      },
+      "frameIdentifier": 75
+    },
+    {
+      "id": 76,
+      "callFrame": {
+        "functionName": "Fn76",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        77
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 76
+      },
+      "frameIdentifier": 76
+    },
+    {
+      "id": 77,
+      "callFrame": {
+        "functionName": "Fn77",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        78
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 77
+      },
+      "frameIdentifier": 77
+    },
+    {
+      "id": 78,
+      "callFrame": {
+        "functionName": "Fn78",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        79
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 78
+      },
+      "frameIdentifier": 78
+    },
+    {
+      "id": 79,
+      "callFrame": {
+        "functionName": "Fn79",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        80
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 79
+      },
+      "frameIdentifier": 79
+    },
+    {
+      "id": 80,
+      "callFrame": {
+        "functionName": "Fn80",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        81
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 80
+      },
+      "frameIdentifier": 80
+    },
+    {
+      "id": 81,
+      "callFrame": {
+        "functionName": "Fn81",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        82
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 81
+      },
+      "frameIdentifier": 81
+    },
+    {
+      "id": 82,
+      "callFrame": {
+        "functionName": "Fn82",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        83
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 82
+      },
+      "frameIdentifier": 82
+    },
+    {
+      "id": 83,
+      "callFrame": {
+        "functionName": "Fn83",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        84
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 83
+      },
+      "frameIdentifier": 83
+    },
+    {
+      "id": 84,
+      "callFrame": {
+        "functionName": "Fn84",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        85
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 84
+      },
+      "frameIdentifier": 84
+    },
+    {
+      "id": 85,
+      "callFrame": {
+        "functionName": "Fn85",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        86
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 85
+      },
+      "frameIdentifier": 85
+    },
+    {
+      "id": 86,
+      "callFrame": {
+        "functionName": "Fn86",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        87
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 86
+      },
+      "frameIdentifier": 86
+    },
+    {
+      "id": 87,
+      "callFrame": {
+        "functionName": "Fn87",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        88
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 87
+      },
+      "frameIdentifier": 87
+    },
+    {
+      "id": 88,
+      "callFrame": {
+        "functionName": "Fn88",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        89
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 88
+      },
+      "frameIdentifier": 88
+    },
+    {
+      "id": 89,
+      "callFrame": {
+        "functionName": "Fn89",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        90
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 89
+      },
+      "frameIdentifier": 89
+    },
+    {
+      "id": 90,
+      "callFrame": {
+        "functionName": "Fn90",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        91
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 90
+      },
+      "frameIdentifier": 90
+    },
+    {
+      "id": 91,
+      "callFrame": {
+        "functionName": "Fn91",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        92
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 91
+      },
+      "frameIdentifier": 91
+    },
+    {
+      "id": 92,
+      "callFrame": {
+        "functionName": "Fn92",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        93
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 92
+      },
+      "frameIdentifier": 92
+    },
+    {
+      "id": 93,
+      "callFrame": {
+        "functionName": "Fn93",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        94
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 93
+      },
+      "frameIdentifier": 93
+    },
+    {
+      "id": 94,
+      "callFrame": {
+        "functionName": "Fn94",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        95
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 94
+      },
+      "frameIdentifier": 94
+    },
+    {
+      "id": 95,
+      "callFrame": {
+        "functionName": "Fn95",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        96
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 95
+      },
+      "frameIdentifier": 95
+    },
+    {
+      "id": 96,
+      "callFrame": {
+        "functionName": "Fn96",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        97
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 96
+      },
+      "frameIdentifier": 96
+    },
+    {
+      "id": 97,
+      "callFrame": {
+        "functionName": "Fn97",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        98
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 97
+      },
+      "frameIdentifier": 97
+    },
+    {
+      "id": 98,
+      "callFrame": {
+        "functionName": "Fn98",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        99
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 98
+      },
+      "frameIdentifier": 98
+    },
+    {
+      "id": 99,
+      "callFrame": {
+        "functionName": "Fn99",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [
+        100
+      ],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 99
+      },
+      "frameIdentifier": 99
+    },
+    {
+      "id": 100,
+      "callFrame": {
+        "functionName": "Fn100",
+        "scriptId": "x",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 1,
+      "children": [],
+      "declaringApplication": {
+        "appName": "X",
+        "appPublisher": "Y",
+        "appVersion": "1"
+      },
+      "applicationDefinition": {
+        "objectType": "Codeunit",
+        "objectName": "Deep",
+        "objectId": 100
+      },
+      "frameIdentifier": 100
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": { "functionName": "OnOpenPage", "scriptId": "Page_30", "url": "", "lineNumber": 0, "columnNumber": 0 },
+      "hitCount": 1,
+      "children": [],
+      "declaringApplication": { "appName": "Base Application", "appPublisher": "Microsoft", "appVersion": "20.0.0.0" },
+      "applicationDefinition": { "objectType": "Page", "objectName": "Item Card", "objectId": 30 },
+      "frameIdentifier": 1
+    }
+  ]
+}
