@@ -1,107 +1,176 @@
 # AL-Flamegraph
 
-This service will generate either so-called folded files or SVG based on **.alcpuprofile** files from Business Central.
+HTTP service that converts Business Central `.alcpuprofile` files into folded stack traces or SVG flame graphs.
 
-The SVGs are generated using [FlameGraph by Brendan Gregg](https://github.com/brendangregg/FlameGraph)
+[![TypeScript](https://img.shields.io/badge/typescript-6.0-blue)](https://typescriptlang.org)
+[![Node](https://img.shields.io/badge/node-20%2B-green)](https://nodejs.org)
+[![CI](https://github.com/SShadowS/AL-Flamegraph/actions/workflows/test.yml/badge.svg)](https://github.com/SShadowS/AL-Flamegraph/actions/workflows/test.yml)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 
-Quick note:
-*This is made in Typescript by someone who rarely uses Typescript. But you got to start somewhere.*
+## Overview
 
-**URL** : `/upload`
+| Metric | Value |
+|--------|-------|
+| Language | TypeScript 6 (target ES2022) |
+| Runtime | Node 20 / 22 / 24 |
+| Framework | Express 5 |
+| Renderer | [FlameGraph by Brendan Gregg](https://github.com/brendangregg/FlameGraph) (`flamegraph.pl`) |
+| Test coverage | ~91 % lines, ~92 % branches (`src/lib/*` at 97 %) |
+| Test suite | 67 tests (Vitest 4) |
+| Public endpoint | `http(s)://blogapi.sshadows.dk/upload` |
 
-(Free webservice up at: http(s)://blogapi.sshadows.dk/upload)
+## Features
 
-**Method** : `POST`
+| Feature | Description |
+|---------|-------------|
+| **Folded output** | Returns Brendan-Gregg-style folded stacks as `text/plain` |
+| **SVG flame graph** | Renders the folded data via `flamegraph.pl` and returns `image/svg+xml` |
+| **Flame chart mode** | Time-ordered chart instead of aggregated flame graph |
+| **Filter** | Allowlist a single AL extension; system / idle frames are dropped |
+| **Theming** | Color palettes: `hot`, `blue`, `aqua` |
+| **Title / subtitle / width** | Configurable SVG metadata and dimensions |
+| **Unix-time round-trip** | Echoes `fromunix` / `tounix` ISO timestamps back as Unix epoch seconds |
+| **Body-size guard** | Rejects payloads above 50 MB with `413` |
 
-**Header options** : 
+## Prerequisites
 
-Set the following header fields to trigger different output.
-| Header field name | Description | Valid input | Only used for SVGs |
-| ----------- | ----------- | ----------- | ----------- |
-| filter | Which extentions to filter out from output | string |
-| onlyfolded | Will just return the folded file, if not set then SVG will be generated | true or false |
-| color | Select the color theme for the SVG | (none), hot, blue, aqua | *
-| title | Sets the title for the SVG | any text intput | *
-| subtitle | Sets the sub-title for the SVG | any text intput | *
-| width | Sets the pixel width for the SVG | integer | *
-| stripfileheader | Removes the initial XML part generate by flamegraph.pl script | true or false | *
-| flamechart | If set to true, then exports flamechart instead of flamegraph | true or false | *
-| fromunix | If set, will return the DateTime as Unix Time Stamp, in the response header | UTC DateTime |
-| tounix | If set, will return the DateTime as Unix Time Stamp, in the response header | UTC DateTime |
+- Node.js 20 or newer
+- Perl 5+ on `PATH` (the bundled `flamegraph.pl` is invoked via `perl ./flamegraph.pl …`)
 
-**Auth required** : NO
-
-**Permissions required** : None
-
-**Data constraints**
-
-The .alcpuprofile file in Body.
-
-```json
-{
-        "nodes": [
-        {
-            "id": 1,
-            "callFrame": {
-                "functionName": "OnOpenPage",
-                "scriptId": "Page_30",
-                "url": "al-preview://allang/Page/30/Page_30.dal",
-                "lineNumber": 2541,
-                "columnNumber": 8
-            },
-            "hitCount": 1,
-            "children": [
-                2
-            ],
-            "declaringApplication": {
-                "appName": "Base Application",
-                "appPublisher": "Microsoft",
-                "appVersion": "20.0.37253.38230"
-            },
-            "applicationDefinition": {
-                "objectType": "Page",
-                "objectName": "Item Card",
-                "objectId": 30
-            },
-            "frameIdentifier": 268519315
-        },
-        {
-            "id": 2,
-            ...
-}
-```
-
-**HTTP example**
-```http
-POST /upload HTTP/1.1
-Host: blogapi.sshadows.dk
-StripFileHeader: false
-color: aqua
-width: 1800
-Content-Type: application/octet-stream
-Content-Length: 22
-
-"<file contents here>"
-```
-**cURL example**
+## Installation
 
 ```bash
-curl --location --request POST 'http://blogapi.sshadows.dk/upload' 
---header 'StripFileHeader: false' 
---header 'color: aqua' 
---header 'width: 1800' 
---header 'Content-Type: application/octet-stream' 
---data-binary '@/c:/temp/PerformanceProfile_Session4.alcpuprofile'
+git clone https://github.com/SShadowS/AL-Flamegraph.git
+cd AL-Flamegraph
+npm install
 ```
 
-## Success Response
+## Quick Start
 
-**Code** : `200`
+```bash
+npm start
+# Server running at http://localhost:5000
+```
 
-**Content example**
+Convert a profile to SVG:
+
+```bash
+curl -X POST http://localhost:5000/upload \
+  -H "Content-Type: application/octet-stream" \
+  -H "color: aqua" \
+  -H "width: 1800" \
+  --data-binary "@./PerformanceProfile_Session4.alcpuprofile" \
+  -o flamegraph.svg
+```
+
+Get just the folded output (skip Perl rendering):
+
+```bash
+curl -X POST http://localhost:5000/upload \
+  -H "Content-Type: application/octet-stream" \
+  -H "onlyfolded: true" \
+  --data-binary "@./PerformanceProfile_Session4.alcpuprofile"
+```
+
+## API
+
+### `POST /upload`
+
+Body: raw `.alcpuprofile` bytes. Behavior is controlled by request headers.
+
+| Header | Type | Default | Description | SVG-only |
+|--------|------|---------|-------------|----------|
+| `onlyfolded` | bool | `false` | Return folded text instead of rendering SVG | — |
+| `filter` | string | _none_ | Include only frames whose `appName` matches; IdleTime frames are dropped | — |
+| `fromunix` | ISO datetime | _none_ | Echoed back in `FromUnix` response header as Unix epoch seconds | — |
+| `tounix` | ISO datetime | _none_ | Echoed back in `ToUnix` response header as Unix epoch seconds | — |
+| `color` | enum | _none_ | One of `hot`, `blue`, `aqua` | ✓ |
+| `title` | string | _none_ | SVG title | ✓ |
+| `subtitle` | string | _none_ | SVG subtitle | ✓ |
+| `width` | integer | _flamegraph.pl default_ | SVG pixel width | ✓ |
+| `flamechart` | bool | `false` | Render time-ordered flame chart instead of aggregated flame graph | ✓ |
+| `stripfileheader` | bool | `false` | Strip the first two lines of XML preamble from the SVG | ✓ |
+
+**Truthy boolean values:** `true`, `"true"`, `1`, `"1"`, `"on"`, `"yes"` (case-sensitive). Anything else is false.
+
+**Responses:**
+
+| Status | Meaning |
+|--------|---------|
+| `200` | Success; body is `text/plain` (folded) or `image/svg+xml` (SVG) |
+| `400` | Malformed JSON body |
+| `413` | Body exceeds the 50 MB limit |
+| `500` | Empty body, processing error, or Perl failure |
+
+### `OPTIONS /` and `OPTIONS /upload`
+
+CORS preflight. Returns `200` with `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Methods: POST, GET, OPTIONS`.
+
+## Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DEBUG` | unset | When truthy, logs each request and persists the raw input / output under `./log/{input,output}/` |
+
+## Architecture
 
 ```
-{
-    Example pending
-}
+Client
+  |
+  v  POST /upload (octet-stream)
+src/server.ts            createApp() factory; express.raw(50mb); routes
+  |
+  v
+src/lib/profile.ts       Parses JSON, walks node tree, builds folded text
+  |
+  v  ./log/processed/<uuid>.folded (transient — deleted via try/finally)
+src/lib/flamegraph.ts    execFile('perl', ['./flamegraph.pl', file, ...args])
+  |
+  v
+flamegraph.pl            Renders SVG on stdout
+  |
+  v
+Client                   text/plain or image/svg+xml
 ```
+
+State per request is isolated; ten parallel uploads do not cross-contaminate (regression-tested in `test/concurrency/`).
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `src/index.ts` | Entry point (port 5000) |
+| `src/server.ts` | `createApp()` factory: body limit, routes, CORS preflight, response wiring |
+| `src/lib/profile.ts` | `ProcessData` — per-request state, recursive tree walk, folded output |
+| `src/lib/flamegraph.ts` | `convertFoldedToSVG` — shells out to `perl ./flamegraph.pl` via `execFile` (arg array, not string concat) |
+| `src/lib/booleans.ts` | `getBoolean` — header truthiness coercion |
+| `src/lib/color.ts` | `CreateColorOption` — color header → `--color=…` CLI flag |
+| `src/lib/dates.ts` | `convertDateTimeToUnixTimestamp` — ISO → Unix seconds |
+| `flamegraph.pl` | Brendan Gregg's renderer (GPL-3.0) |
+| `test/` | Vitest suite: unit, integration, e2e, concurrency |
+| `Fixes.md` | Audit log of known issues and their resolution status |
+
+## Development
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Auto-reloading dev server (nodemon + ts-node) |
+| `npm test` | Full Vitest suite |
+| `npm run test:cov` | Vitest with v8 coverage report (HTML at `coverage/index.html`) |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run check` | Biome (formatter + linter) |
+| `npm run check:fix` | Apply all auto-fixable Biome corrections |
+| `npm run ci` | Typecheck + Biome + full test suite (mirrors GitHub Actions) |
+| `npm run fixtures:regen` | Rebuild golden folded outputs for the synthetic test fixtures |
+| `npm run build` | Emit JavaScript to `out/` |
+
+Test fixtures: `test/fixtures/real/*.alcpuprofile` (real session captures) and `test/fixtures/synthetic/*.json` (hand-authored edge cases). Golden folded outputs live in `test/fixtures/expected/`.
+
+## Public Demo
+
+A free hosted instance runs at `http://blogapi.sshadows.dk/upload`. Use at your own discretion — no SLA, no auth, rate-limited at the reverse proxy.
+
+---
+
+**Author**: SShadowS (sshadows@sshadows.dk)
+**License**: GPL-3.0 (see [LICENSE](LICENSE)) — inherited from `flamegraph.pl`
