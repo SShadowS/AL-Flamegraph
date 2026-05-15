@@ -36,16 +36,18 @@ d('POST /upload headers round-trip', () => {
     expect(r.body.toString()).toContain('width="1800"');
   });
 
-  it.fails('Fixes.md #3: color=hot produces hot palette (currently falls through to aqua)', async () => {
+  it('Fixes.md #3 fixed: color=hot produces hot palette (fixed)', async () => {
     const r = await request(app)
       .post('/upload')
       .set('Content-Type', 'application/octet-stream')
       .set('color', 'hot')
       .buffer(true)
       .send(body);
-    // flamegraph.pl writes the colorscheme name into the SVG style declaration when --color=hot is used.
-    // With the fallthrough bug the SVG will use the aqua palette.
-    expect(r.body.toString()).toMatch(/hot/i);
+    // The hot palette uses warm reds/oranges (high red, low blue).
+    // The aqua palette uses teal tones (equal green and blue components).
+    // With the fallthrough bug the SVG would use aqua colours instead.
+    // Verify warm colours are present: at least one fill with red >= 200 and blue < 100.
+    expect(r.body.toString()).toMatch(/fill="rgb\(2\d\d,\d+,\d{1,2}\)"/)
   });
 
   it('flamechart=true produces flamechart', async () => {

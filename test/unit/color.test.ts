@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { CreateColorOption } from '../../src/lib/color';
 
 describe('CreateColorOption', () => {
-  it.fails('Fixes.md #3: returns --color=hot for "hot" (currently falls through to aqua)', () => {
+  it('Fixes.md #3 fixed: returns --color=hot for "hot"', () => {
     expect(CreateColorOption('hot')).toBe('--color=hot');
   });
 
-  it.fails('Fixes.md #3: returns --color=blue for "blue" (currently falls through to aqua)', () => {
+  it('Fixes.md #3 fixed: returns --color=blue for "blue"', () => {
     expect(CreateColorOption('blue')).toBe('--color=blue');
   });
 
