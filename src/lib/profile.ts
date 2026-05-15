@@ -21,7 +21,9 @@ function AddLine(state: ProfileState, element: any): void {
 function ProcessElement(state: ProfileState, element: any, filter: string): void {
   state.processed.add(element.id);
   if (filter) {
-    if ((element.callFrame.functionName == 'IdleTime') || (element.declaringApplication.appName !== filter)) {
+    const isIdle = element.callFrame.functionName === 'IdleTime';
+    const matchesFilter = element.declaringApplication.appName === filter;
+    if (!isIdle && matchesFilter) {
       AddLine(state, element);
     }
   } else {

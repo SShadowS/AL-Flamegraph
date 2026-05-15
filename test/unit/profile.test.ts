@@ -24,7 +24,7 @@ describe('ProcessData', () => {
     expect(result.output).toBe(loadExpectedFolded('idle-no-filter.folded'));
   });
 
-  it.fails('Fixes.md #15: filter="Custom Ext" should INCLUDE Custom Ext frames', async () => {
+  it('Fixes.md #15 fixed: filter="Custom Ext" includes Custom Ext frames and excludes IdleTime', async () => {
     const uuid = 'test-' + Math.random().toString(36).slice(2);
     const data = loadSynthetic('idle.json');
     const result = await ProcessData(data, uuid, true, '', '', '', 0, false, 'Custom Ext', noopFlame);

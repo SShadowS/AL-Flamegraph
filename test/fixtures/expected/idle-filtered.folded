@@ -1,1 +1,2 @@
-C."Idle".IdleTime 3
+C."Order Processing".OnRun 5
+C."Order Processing".OnRun;C."Order Posting".PostOrder 2
