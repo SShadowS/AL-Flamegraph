@@ -104,6 +104,7 @@ dist
 .tern-port
 
 *.alcpuprofile
+!test/fixtures/real/*.alcpuprofile
 output.txt
 al.svg
 encoded*.txt
