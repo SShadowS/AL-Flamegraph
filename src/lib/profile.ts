@@ -9,10 +9,11 @@ interface ProfileState {
 
 function AddLine(state: ProfileState, element: any): void {
   let line: string = "";
+  const typeChar = (element.applicationDefinition.objectType ?? '?').substring(0, 1);
   if (state.callStack !== "") {
-    line = `${state.callStack};${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
+    line = `${state.callStack};${typeChar}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   } else {
-    line = `${element.applicationDefinition.objectType.substring(0, 1)}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
+    line = `${typeChar}."${element.applicationDefinition.objectName}".${element.callFrame.functionName}`;
   }
   state.callStack = line;
   state.output += `${line} ${element.hitCount}\n`;

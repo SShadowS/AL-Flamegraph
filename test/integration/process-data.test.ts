@@ -45,9 +45,9 @@ describe('ProcessData against real fixtures (safe set)', () => {
   }
 });
 
-describe('ProcessData against real fixtures (crashing set — Fixes.md #38)', () => {
+describe('ProcessData against real fixtures (formerly crashing — Fixes.md #38 fixed)', () => {
   for (const name of CRASHING_FIXTURES) {
-    it.fails(`Fixes.md #38: ${name} processes without TypeError on missing objectType`, async () => {
+    it(`Fixes.md #38 fixed: ${name} processes without TypeError on missing objectType`, async () => {
       const data = JSON.parse(loadRealRaw(name));
       const result = await ProcessData(data, 'real-' + name, true, '', '', '', 0, false, '', noopFlame);
       // If we reach here, the bug is fixed.
