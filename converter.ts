@@ -1,15 +1,12 @@
 import * as express from 'express';
 const app = express();
 import fs = require('fs');
-import util = require('util');
-const execPromise = util.promisify(require('child_process').exec);
 const Pyroscope = require('@pyroscope/nodejs');
 import { v4 as uuidv4 } from 'uuid';
-import validator from 'validator';
 import { getBoolean } from './src/lib/booleans';
-import { CreateColorOption } from './src/lib/color';
 import { convertDateTimeToUnixTimestamp } from './src/lib/dates';
 import { ProcessData, setRandomUUID, state as profileState } from './src/lib/profile';
+import { convertFoldedToSVG as ConvertFoldedToSVGasync } from './src/lib/flamegraph';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -141,52 +138,6 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 });
 
-/**
- * It takes a folded file, and runs the flamegraph.pl script on it, and returns the output
- * @param {string} foldedfile - The file that contains the folded stack data.
- * @param {string} title - The title of the flamegraph
- * @param {string} subtitle - The subtitle of the flamegraph
- * @param {string} colorHeader - The colorscheme of the flamegraph
- * @param {number} width - The width of the SVG output.
- * @param {boolean} flamechart - boolean - if true, the flamechart will be generated. If false, the
- * flamegraph will be generated.
- * @returns a promise.
- */
-async function ConvertFoldedToSVGasync(foldedfile: string, title: string, subtitle: string, colorHeader: string, width: number, flamechart: boolean) {
-  let command: string = `./flamegraph.pl ${foldedfile}`;
-  //let command: string = `./flamegraph.pl ${foldedfile} --flamechart --color=aqua --width 1800 --title "Session4 Posting of 12 orders" --subtitle "Free converter live soon"`;
-
-  if (flamechart) {
-    command += " --flamechart";
-  }
-
-  if (title) {
-    command += ` --title "${validator.stripLow(validator.escape(title))}"`;
-  }
-
-  if (subtitle) {
-    command += ` --subtitle "${validator.stripLow(validator.escape(subtitle))}"`;
-  }
-
-  if (width > 0) {
-    command += ` --width ${width}`;
-  }
-
-  if (colorHeader) {
-    command += ` ${CreateColorOption(colorHeader)}`;
-  }
-
-  try {
-    /* Logging the command that will be run. */
-    console.log(`Will run: ${command}`);
-
-    /* Running the script. */
-    const { stdout, stderr } = await execPromise(command);
-    return stdout;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 /**
  * This function takes a string as an argument and writes the contents of the output variable to a file
