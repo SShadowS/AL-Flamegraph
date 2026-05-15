@@ -9,12 +9,12 @@
     "name": "al-flamegraph",
     "version": "1.0.0",
     "description": "Creates SVG Flamegraphs from .alcpuprofile files",
-    "main": "/out/converter.js",
+    "main": "out/src/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "vitest run",
         "dev": "nodemon",
-        "start": "/home/sshadows/AL-Flamegraph/node_modules/.bin/ts-node converter.ts",
-        "build": "/home/sshadows/AL-Flamegraph/node_modules/.bin/tsc -p /home/sshadows/AL-Flamegraph/tsconfig.json && pm2 restart all"
+        "start": "ts-node src/index.ts",
+        "build": "tsc -p tsconfig.json"
     },
     "repository": {
         "type": "git",
