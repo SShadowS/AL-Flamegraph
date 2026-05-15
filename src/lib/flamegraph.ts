@@ -34,11 +34,6 @@ export async function convertFoldedToSVG(
   }
 
   console.log(`Will run: perl ${args.join(' ')}`);
-  try {
-    const { stdout } = await execFilePromise('perl', args);
-    return stdout as string;
-  } catch (error) {
-    console.log(error);
-    return undefined as any;
-  }
+  const { stdout } = await execFilePromise('perl', args);
+  return stdout as string;
 }

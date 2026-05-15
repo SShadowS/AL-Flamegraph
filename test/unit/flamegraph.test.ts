@@ -60,10 +60,10 @@ describe('convertFoldedToSVG', () => {
     expect(args[titleIdx + 1]).toBe('pre$(rm -rf /)post');
   });
 
-  it.fails('Fixes.md #8: should reject (throw or return rejected promise) when exec errors', async () => {
+  it('Fixes.md #8 fixed: rejects when exec errors', async () => {
     execFileMock.mockImplementationOnce((cmd: string, args: string[], cb: any) =>
       cb(new Error('perl missing'), { stdout: '', stderr: '' }),
     );
-    await expect(convertFoldedToSVG('a.folded', '', '', '', 0, false)).rejects.toThrow();
+    await expect(convertFoldedToSVG('a.folded', '', '', '', 0, false)).rejects.toThrow('perl missing');
   });
 });

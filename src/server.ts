@@ -90,6 +90,12 @@ export function createApp(deps: AppDeps = {}): express.Express {
         response.statusCode = 500;
         response.end("Error");
       }
+    }).catch((error) => {
+      console.log(`Error in /upload (${requestId}):`, error);
+      if (!response.headersSent) {
+        response.statusCode = 500;
+        response.end("Error");
+      }
     });
   });
 
