@@ -49,7 +49,14 @@ export function createApp(deps: AppDeps = {}): express.Express {
       console.log(`Writing input to file.`);
       fs.writeFileSync(`./log/input/${requestId}.json`, result);
     }
-    const input = JSON.parse(result);
+    let input: any;
+    try {
+      input = JSON.parse(result);
+    } catch {
+      response.statusCode = 400;
+      response.end("Invalid JSON");
+      return;
+    }
 
     ProcessData(input, requestId, onlyFolded, title, subtitle, colorHeader, width, flamechart, filter, flamegraph).then((result_data) => {
       let finalresult = result_data.output;

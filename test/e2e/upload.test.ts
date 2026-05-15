@@ -73,7 +73,7 @@ d('POST /upload (real flamegraph.pl)', () => {
     expect(r.headers['fromunix']).toBeDefined();
   });
 
-  it.fails('Fixes.md #6: returns 400 on malformed JSON (currently crashes the request)', async () => {
+  it('Fixes.md #6 fixed: returns 400 on malformed JSON', async () => {
     const r = await request(app)
       .post('/upload')
       .set('Content-Type', 'application/octet-stream')
