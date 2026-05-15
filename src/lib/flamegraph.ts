@@ -1,8 +1,9 @@
+import { exec } from 'child_process';
 import * as util from 'util';
 import validator from 'validator';
 import { CreateColorOption } from './color';
 
-const execPromise = util.promisify(require('child_process').exec);
+const execPromise = util.promisify(exec);
 
 export async function convertFoldedToSVG(
   foldedfile: string,
