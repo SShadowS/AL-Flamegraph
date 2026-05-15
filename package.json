@@ -18,7 +18,8 @@
         "test": "vitest run",
         "dev": "nodemon",
         "start": "ts-node src/index.ts",
-        "build": "tsc -p tsconfig.json"
+        "build": "tsc -p tsconfig.json",
+        "fixtures:regen": "ts-node scripts/regen-fixtures.ts"
     },
     "repository": {
         "type": "git",
