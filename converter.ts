@@ -7,6 +7,7 @@ const Pyroscope = require('@pyroscope/nodejs');
 import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
 import { getBoolean } from './src/lib/booleans';
+import { CreateColorOption } from './src/lib/color';
 
 /* Initializing the Pyroscope library. */
 Pyroscope.init({
@@ -278,24 +279,6 @@ async function ConvertFoldedToSVGasync(foldedfile: string, title: string, subtit
 function WriteOutputToFile(foldedfile: string) {
   // TODO: Sanitize the output with replace all and don't write the file.
   fs.writeFileSync(foldedfile, output);
-}
-
-/**
- * CreateColorOption takes the colorHeader string and returns the corresponding command line string.
- * @param {string} colorHeader - The color header that was passed in from the request.
- * @returns A string
- */
-function CreateColorOption(colorHeader: string) {
-  let colorOption: string = "";
-  switch (colorHeader) {
-    case "hot":
-      colorOption = "--color=hot";
-    case "blue":
-      colorOption = "--color=blue";
-    case "aqua":
-      colorOption = "--color=aqua";
-  }
-  return colorOption;
 }
 
 
