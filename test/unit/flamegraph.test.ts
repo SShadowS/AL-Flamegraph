@@ -17,7 +17,7 @@ describe('convertFoldedToSVG', () => {
   it('builds base command with folded file', async () => {
     await convertFoldedToSVG('a.folded', '', '', '', 0, false);
     expect(execMock).toHaveBeenCalled();
-    expect(execMock.mock.calls[0][0]).toBe('./flamegraph.pl a.folded');
+    expect(execMock.mock.calls[0][0]).toBe('perl ./flamegraph.pl a.folded');
   });
 
   it('appends --flamechart when flamechart=true', async () => {

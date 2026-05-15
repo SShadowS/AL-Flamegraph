@@ -13,7 +13,7 @@ export async function convertFoldedToSVG(
   width: number,
   flamechart: boolean,
 ): Promise<string> {
-  let command: string = `./flamegraph.pl ${foldedfile}`;
+  let command: string = `perl ./flamegraph.pl ${foldedfile}`;
 
   if (flamechart) {
     command += " --flamechart";
